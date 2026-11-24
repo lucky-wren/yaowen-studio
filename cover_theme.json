@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "theme": "focus_paper",
+  "tpl": "equal",
+  "size": "portrait",
+  "gap": "standard",
+  "wm": {
+    "on": false,
+    "text": "今日要闻速览 · 2026-11-19",
+    "pos": "bottom_right",
+    "alpha": 0.12
+  },
+  "issue": {
+    "date": "2026-11-19",
+    "weekday": "星期四",
+    "date_cn": "2026年11月19日，星期四",
+    "date_line": "2026-11-19 星期四",
+    "issue_no": "第01期",
+    "notes": ""
+  },
+  "cover_header": {
+    "title": "今日要闻速览",
+    "show_title": true,
+    "show_date": true,
+    "show_issue": true
+  },
+  "export_size": "portrait",
+  "count": 10,
+  "semantic": {
+    "mode": "L1",
+    "columns": [
+      "数值",
+      "单位",
+      "趋势",
+      "时间角标",
+      "板块",
+      "专题ID",
+      "专题名",
+      "角标",
+      "机构短名",
+      "主句",
+      "角色标签",
+      "来源短名"
+    ],
+    "note": "素材来自表格可选列，未填列不推断；缺列不显示对应元素，版式按素材自动选择"
+  },
+  "alt_bands": false,
+  "sep": "lines",
+  "sep_strength": 1.0,
+  "sep_accent": false,
+  "item_style": {
+    "font": "zc_hy",
+    "size": 47,
+    "spacing": 3,
+    "line": 1.2,
+    "color": "#606C7B",
+    "auto_color": false,
+    "weight": 400,
+    "bold": false,
+    "num_ink": "#D94A3D",
+    "num_bg": "#E3DCCE"
+  },
+  "focus_label": false,
+  "color_scheme": {
+    "bg": "#F2EEE5",
+    "main": "#1B2733",
+    "body": "#3A4552",
+    "muted": "#7C7163",
+    "acc": "#D94A3D",
+    "line": "#C9C2B4",
+    "num_bg": "#E3DCCE",
+    "num_fg": "#1B2733"
+  },
+  "scheme": "D"
+}
