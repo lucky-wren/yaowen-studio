@@ -411,7 +411,7 @@ body.doc-mini #docMini{display:block}
   <section class="panel" id="sec-source"><div class="ph"><span class="n">01</span><h2>资讯数据入口</h2><span class="tag" id="srcTag">内置快照 · 30 条 / 封面 10 条</span></div><div class="pb">
    <div class="okbar"><b id="srcWinLabel">资讯窗口：昨日 06:00 — 今日 06:00</b>（Asia/Shanghai）。表格数据按此时段收录；发布时刻可设，页面只标注、不代发。</div>
    <div class="row"><label class="lb">来源类型</label><div class="chips" id="srcTypes">
-    <span class="chip on" data-t="snapshot">内置快照</span><span class="chip" data-t="url">腾讯文档在线 URL</span><span class="chip" data-t="xlsx">本地 xlsx</span></div></div>
+    <span class="chip on" data-t="snapshot">内置快照</span><span class="chip" data-t="url">腾讯文档在线 URL</span><span class="chip" data-t="xlsx">本地 xlsx</span><span class="chip" data-t="ybchat">元宝对话</span></div></div>
    <div class="row" id="urlRow" style="display:none"><label class="lb">文档地址</label><input type="text" id="srcUrl" value="https://docs.qq.com/sheet/DTGFjR0xXWnVZcWR6"></div>
    <div class="row" id="xlsxUrlRow" style="display:none"><label class="lb">导出直链</label><input type="text" id="srcXlsxUrl" placeholder="https://…/xxx.xlsx（可选；腾讯文档分享页不是直链）"></div>
    <div class="row" id="fileRow" style="display:none"><label class="lb">选择文件</label><input type="file" id="srcFile" accept=".xlsx"></div>
@@ -430,6 +430,54 @@ body.doc-mini #docMini{display:block}
    </div>
    <div class="row"><button class="pri" id="btnApplySrc">应用数据源</button><button id="btnExportSrc">⬇ 导出 data_source.json</button></div>
    <div id="srcMsg"></div>
+   <style>
+   #ybFetchRow input[type=text]{flex:1;min-width:0}
+   #ybPickRow .hint{flex:1;margin:0}
+   #ybSpin{display:none;width:13px;height:13px;border:2px solid #2a3a48;border-top-color:#7fe0b0;border-radius:50%;animation:ybsp .7s linear infinite;flex:0 0 auto}
+   @keyframes ybsp{to{transform:rotate(360deg)}}
+   #ybModal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:rgba(6,12,18,.72);padding:18px}
+   #ybModal .box{width:min(780px,100%);max-height:86vh;overflow:auto;background:#101c25;border:1px solid #2a3a48;border-radius:14px;box-shadow:0 22px 70px rgba(0,0,0,.55)}
+   .ybm-h{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #22323e;background:#13222c;position:sticky;top:0;z-index:2}
+   .ybm-h b{font-size:14px;color:#e6f0f4}
+   .ybm-h small{display:block;font-size:11px;color:#8ea6b4;margin-top:2px}
+   .ybm-x{margin-left:auto;border:1px solid #2a3a48;background:transparent;color:#9fc0d0;border-radius:8px;padding:5px 11px;font-size:12px;cursor:pointer}
+   .ybm-b{padding:14px 16px}
+   .ybm-note{font-size:12px;color:#93b3c4;line-height:1.8;margin-bottom:12px}
+   .ybm-note b{color:#7fe0b0}
+   .ybm-empty{border:1px dashed #33506a;border-radius:11px;padding:16px;font-size:12.5px;color:#9fc0d0;line-height:1.9}
+   .ybm-empty b{color:#f0b96a}
+   .ybm-item{display:flex;gap:12px;align-items:flex-start;border:1px solid #243746;border-radius:11px;padding:12px;margin-bottom:9px;background:#132330}
+   .ybm-ic{width:34px;height:34px;border-radius:9px;background:#1c4a7a;color:#cfe6ff;font-size:11px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-weight:700}
+   .ybm-meta{min-width:0;flex:1}
+   .ybm-meta b{display:block;font-size:13px;color:#e6f0f4;word-break:break-all}
+   .ybm-meta span{display:block;font-size:11.5px;color:#8ea6b4;margin-top:3px;line-height:1.6}
+   .ybm-ops{display:flex;gap:6px;flex:0 0 auto;flex-wrap:wrap;justify-content:flex-end}
+   .ybm-btn{border:1px solid #2a3a48;background:#0c1720;color:#9fc0d0;border-radius:8px;padding:6px 11px;font-size:11.5px;cursor:pointer;white-space:nowrap}
+   .ybm-btn.go{background:#2B5AED;border-color:#2B5AED;color:#fff;font-weight:600}
+   .ybm-btn:hover{filter:brightness(1.15)}
+   .ybm-preview{margin-top:10px;background:#0b1620;border:1px solid #22323e;border-radius:9px;padding:10px;font-size:11.5px;color:#c3d6e0;line-height:1.8;max-height:190px;overflow:auto;display:none}
+   @media(max-width:620px){.ybm-item{flex-wrap:wrap}.ybm-ops{width:100%;justify-content:flex-start}}
+   </style>
+   <div class="row" id="ybFetchRow" style="display:none"><label class="lb">对话链接</label>
+    <input type="text" id="ybUrl" placeholder="粘贴元宝对话分享链接" autocomplete="off" spellcheck="false">
+    <span id="ybSpin"></span>
+    <button class="pri" id="ybFetch">拉取这个对话的产物</button></div>
+   <div class="row" id="ybPickRow" style="display:none"><label class="lb">产物</label>
+    <span class="hint" id="ybProdHint">同一个对话可能有多个产物，自己挑一个导入</span>
+    <button id="ybPick">选择产物导入</button></div>
+
+   <div id="ybModal" role="dialog" aria-label="选择产物导入">
+    <div class="box">
+     <div class="ybm-h"><div style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#2B5AED,#7b61ff);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">元</div>
+      <div style="min-width:0;flex:1"><b>选择产物导入</b><small>工作台已从这条对话取回的产物，点「导入这一个」即成为本期数据</small></div>
+      <button class="ybm-x" id="ybClose">关闭 ✕</button></div>
+     <div class="ybm-b">
+      <div class="ybm-note" id="ybNote">当前对话：<b id="ybNoteUrl">—</b><br>下面是工作台自己取回的多个独立产物，<b>可以反复换着导入</b>，不用重新拉。</div>
+      <div id="ybProdList"></div>
+      <div class="ybm-preview" id="ybPreview"></div>
+     </div>
+    </div>
+   </div>
    <div class="gates" id="gates"></div>
    <p class="hint">按 <b>sheet 名锁定</b>，不按「第几个 sheet」——在线返回顺序每次可能不同。页面本身不直接联网拉取：在线地址由数据源配置登记并写入 data.js；这里只登记配置与解析结果，命中已核对文档时标注「非实时」，未知链接直接报告「没有拉取到数据」，不拿旧数据冒充。</p>
   </div></section>
@@ -4669,9 +4717,13 @@ function render(){
  $('urlRow').style.display=S.source.type==='url'?'flex':'none';
  $('xlsxUrlRow').style.display=S.source.type==='url'?'flex':'none';
  $('fileRow').style.display=S.source.type==='xlsx'?'flex':'none';
+ $('ybFetchRow').style.display=S.source.type==='ybchat'?'flex':'none';
+ $('ybPickRow').style.display=S.source.type==='ybchat'?'flex':'none';
+ if($('ybUrl')&&!$('ybUrl').value&&S.source.ybUrl)$('ybUrl').value=S.source.ybUrl;
+ if($('ybProdHint'))$('ybProdHint').textContent=S.source.ybPicked?('当前已导入：'+S.source.ybPicked+'（可随时换）'):'同一个对话可能有多个产物，自己挑一个导入';
  $('srcUrl').value=S.source.url;$('sheetScript').value=S.source.sheetScript;$('sheetCover').value=S.source.sheetCover;
  renderWindowState();
- $('srcTag').textContent=(S.source.type==='snapshot'?'内置快照':S.source.type==='url'?'腾讯文档在线 URL':'本地 xlsx')+' · 全量 '+__ALL_NEWS.length+' 条（有效 '+validCount()+' / 生效 '+P.news.length+'） / 封面 '+P.cover.length+' 条（显示 '+coverCount()+'）';
+ $('srcTag').textContent=(S.source.type==='snapshot'?'内置快照':S.source.type==='url'?'腾讯文档在线 URL':S.source.type==='ybchat'?'元宝对话':'本地 xlsx')+' · 全量 '+__ALL_NEWS.length+' 条（有效 '+validCount()+' / 生效 '+P.news.length+'） / 封面 '+P.cover.length+' 条（显示 '+coverCount()+'）';
  $('openText').value=S.script.opening;$('windowText').value=S.script.windowText;$('windowOn').checked=S.script.windowOn;
   if($('pubTime')){const _w=publishWindow();
    $('pubTime').value=_w.time;if($('pubLead'))$('pubLead').value=_w.lead;
@@ -5136,6 +5188,11 @@ $('btnApplySrc').onclick=async()=>{
  else if(t==='url'){
   S.source.msg='<div class="warnbar"><b>已登记在线文档地址</b>：'+esc(S.source.url)+
    '。GitHub Pages 是静态页，浏览器不能跨域直读腾讯文档分享页；请在「导出直链」填 xlsx 直链（由数据源配置登记），或改用「本地 xlsx」。本页不缓存旧快照。</div>';
+ }
+
+ else if(t==='ybchat'){
+  S.source.msg='<div class="okbar"><b>本期数据来自元宝对话</b>'+(S.source.ybPicked?('，已选产物「'+esc(S.source.ybPicked)+'」'):'')+
+   '。要换一期：改上面的链接点「拉取这个对话的产物」；要换产物：点「选择产物导入」。<span style="color:#8ea6b4">全程在这个页面里完成。</span></div>';
  }
  else{
   const f=$('srcFile').files[0];
@@ -6558,6 +6615,315 @@ function sheetsToCover(rows){const ti=_hidx(rows,'标题'),li=_hidx(rows,'分类
  }}catch(e){}
 })();
 
+
+/* ===== 元宝对话（工作台内闭环）：页面自己取数 → 多个产物 → 选一个 → 生效 ===== */
+(function(){
+ function q(i){return document.getElementById(i)}
+ function x(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]})}
+ function toast(m){let t=q('ybToast');if(!t){t=document.createElement('div');t.id='ybToast';t.style.cssText='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1f2a36;color:#e6f0f4;border:1px solid #2a3a48;border-radius:10px;padding:9px 16px;font-size:12.5px;z-index:100000;opacity:0;transition:.2s;pointer-events:none';document.body.appendChild(t)}t.textContent=m;t.style.opacity='1';clearTimeout(t._h);t._h=setTimeout(function(){t.style.opacity='0'},2200)}
+ let PRODUCTS=[];
+ function normNews(items){
+  return (items||[]).filter(function(n){return n&&(n.title||n['标题']||n[0])}).map(function(n){
+   if(Array.isArray(n))n={title:n[0],summary:n[1],label:n[2],'上位大类':n[3],'来源':n[4],lead:n[5]};
+   const title=String(n.title||n['标题']||''),summary=String(n.summary||n['内容摘要']||n.content||'');
+   let src=n.sources||n['来源']||[];
+   if(typeof src==='string')src=src.split(' · ').filter(Boolean).map(function(p){return{platform:p,url:''}});
+   else if(Array.isArray(src))src=src.map(function(v){return typeof v==='string'?{platform:v,url:''}:(v||{})});
+   return{title:title,summary:summary,label:String(n.label||n['分类标签']||''),
+    level:String(n.level||n['等级']||''),
+    sem:n.sem||{board:String(n['上位大类']||''),src:'',value:'',unit:'',trend:'',stamp:'',org:''},
+    sources:src,lead:String(n.lead||'')||summary.split('\n')[0]};
+  });
+ }
+ function normCover(cover,news){
+  const cv=(cover||[]).filter(function(c){return c&&(c.title||c[2])}).map(function(c,i){
+   if(Array.isArray(c))c={rank:c[0],label:c[1],title:c[2],sem:(news[c[3]]||{}).sem||{}};
+   return{rank:c.rank||i+1,label:String(c.label||''),title:String(c.title||''),sem:c.sem||{}};});
+  return (cv.length?cv:news.slice(0,10).map(function(n,i){return{rank:i+1,label:n.label,title:n.title,sem:n.sem}})).slice(0,10);
+ }
+ /* 工作台带回来的 xlsx（base64）用页面自带的 parseXlsx 解析，不装任何东西 */
+ async function xlsxToNews(b64){
+  const bin=atob(b64),u8=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
+  const sheets=await parseXlsx(new Blob([u8]));
+  const names=Object.keys(sheets);
+  const nm=names.indexOf('处理后的数据')>-1?'处理后的数据':names[0];
+  const rows=sheets[nm]||[],hdr=(rows[0]||[]).map(function(v){return String(v==null?'':v).trim()});
+  const ix=function(k){return hdr.indexOf(k)};
+  const iT=ix('标题'),iS=ix('内容摘要'),iL=ix('分类标签'),iB=ix('上位大类'),iSrc=ix('来源'),iG=ix('等级');
+  if(iT<0)throw new Error('sheet「'+nm+'」缺「标题」列（实际：'+hdr.slice(0,10).join(' / ')+'）');
+  const news=rows.slice(1).filter(function(r){return r[iT]&&String(r[iT]).trim()}).map(function(r){
+   return{title:String(r[iT]||''),summary:String(r[iS]||''),label:String(r[iL]||''),level:String(r[iG]||''),
+    sem:{board:String(r[iB]||''),src:'',value:'',unit:'',trend:'',stamp:'',org:''},
+    sources:String(r[iSrc]||'').split(' · ').filter(Boolean).map(function(p){return{platform:p,url:''}}),
+    lead:String(r[iS]||'').split('\n')[0]};});
+  let cover=[];
+  const cn=names.indexOf('排名最靠前的10条')>-1?'排名最靠前的10条':null;
+  if(cn){
+   const cr=sheets[cn]||[],ch=(cr[0]||[]).map(function(v){return String(v==null?'':v).trim()});
+   const cT=ch.indexOf('标题'),cL=ch.indexOf('分类标签'),cR=ch.indexOf('展示序');
+   cover=cr.slice(1).filter(function(r){return r[cT]&&String(r[cT]).trim()}).map(function(r,i){
+    const hit=news.find(function(n){return n.title===String(r[cT]||'').trim()});
+    return{rank:+(r[cR]||i+1),label:String(r[cL]||''),title:String(r[cT]||''),sem:(hit||{}).sem||{}};});
+  }
+  return{news:news,cover:cover};
+ }
+ function setSrcMsg(html){S.source.msg=html;try{renderSrcMsg();}catch(e){}}
+ /* ---- 取数通道：同源函数优先，公开只读通道兜底（全部内置，页面里不填任何东西） ---- */
+ const ENC=encodeURIComponent;
+ const CHANNELS=[
+  {n:'工作台同源函数', proxy:false, f:function(u){return 'api/yuanbao?u='+ENC(u)}},
+  {n:'工作台同源函数(域根)', proxy:false, f:function(u){return '/api/yuanbao?u='+ENC(u)}},
+  {n:'公开只读通道 A', proxy:true,  f:function(u){return 'https://api.allorigins.win/raw?url='+ENC(u)}},
+  {n:'公开只读通道 B', proxy:true,  f:function(u){return 'https://api.allorigins.win/get?url='+ENC(u)}},
+  {n:'公开只读通道 C', proxy:true,  f:function(u){return 'https://api.codetabs.com/v1/proxy/?quest='+ENC(u)}},
+  {n:'公开只读通道 D', proxy:true,  f:function(u){return 'https://corsproxy.io/?url='+ENC(u)}},
+  {n:'公开只读通道 E', proxy:true,  f:function(u){return 'https://api.cors.lol/?url='+ENC(u)}},
+  {n:'公开只读通道 F', proxy:true,  f:function(u){return 'https://r.jina.ai/'+u}}
+ ];
+ if(window.__YB_API__)CHANNELS.unshift({n:'自定义同源函数',proxy:false,f:function(u){return window.__YB_API__+'?u='+ENC(u)}});
+ function shortLink(raw){
+  try{
+   const u=new URL(raw),parts=u.pathname.split('/').filter(Boolean);
+   const sid=parts[parts.length-1];
+   if(sid&&sid!=='chat'&&sid!=='s'&&sid.length>=4)return{sid:sid,url:'https://yuanbao.tencent.com/s/'+ENC(sid)};
+  }catch(e){}
+  return{sid:'',url:raw};
+ }
+ /* 取文本：逐条试，谁先给可用内容用谁 */
+ async function grab(u){
+  const fails=[];
+  for(const ch of CHANNELS){
+   try{
+    const r=await fetch(ch.f(u),{headers:{'Accept':'*/*'}});
+    if(!r.ok){fails.push(ch.n+' HTTP '+r.status);continue}
+    const ct=r.headers.get('content-type')||'';
+    if(ct.indexOf('json')>-1){
+     const j=await r.json();
+     if(j&&j.ok===true&&Array.isArray(j.products))return{k:'products',products:j.products,meta:j.meta,ch:ch.n};
+     if(j&&j.ok===false)return{k:'error',error:j.error,ch:ch.n};
+     if(j&&typeof j.contents==='string'&&j.contents.length>40)return{k:'text',text:j.contents,ch:ch.n};
+     fails.push(ch.n+' 返回的不是产物清单');continue;
+    }
+    const t=await r.text();
+    if(!t||t.length<40){fails.push(ch.n+' 空响应');continue}
+    return{k:'text',text:t,ch:ch.n};
+   }catch(e){fails.push(ch.n+' '+e.name)}
+  }
+  return{k:'fail',fails:fails};
+ }
+ /* 取二进制（xlsx）：只走只读通道，转成 base64 交给页面自带 parseXlsx */
+ async function grabBinary(u){
+  for(const ch of CHANNELS){
+   if(!ch.proxy)continue;
+   try{
+    const r=await fetch(ch.f(u));
+    if(!r.ok)continue;
+    const ab=await r.arrayBuffer();
+    if(ab.byteLength<200)continue;
+    const by=new Uint8Array(ab);let bin='';
+    for(let i=0;i<by.length;i+=0x8000)bin+=String.fromCharCode.apply(null,by.subarray(i,i+0x8000));
+    return btoa(bin);
+   }catch(e){}
+  }
+  return null;
+ }
+ /* 页面内解析：SSR 数据 / 文本里的 JSON 块 / xlsx 文件名 → 多个产物 */
+ function walk(node,strings,msgs,d){
+  if(d>30)return;
+  if(typeof node==='string'){if(node.trim())strings.push(node.trim());return}
+  if(Array.isArray(node)){for(const v of node)walk(v,strings,msgs,d+1);return}
+  if(node&&typeof node==='object'){
+   const role=node.speaker||node.role||'';
+   for(const k of ['displayPrompt','speech','content','text','prompt','answer','msg']){
+    if(typeof node[k]==='string'&&node[k].trim().length>8){msgs.push([String(role),node[k].trim()]);break}
+   }
+   for(const v of Object.values(node))walk(v,strings,msgs,d+1);
+  }
+ }
+ function jsonObjects(strings){
+  const raw=[];
+  for(const s of strings){
+   for(const m of s.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi))raw.push(m[1]);
+   for(const m of s.matchAll(/\{[\s\S]{40,}?\}/g))raw.push(m[0]);
+  }
+  const out=[],seen=new Set();
+  for(const t of raw){
+   const a=t.indexOf('{'),b=t.lastIndexOf('}');
+   if(a<0||b<=a)continue;
+   let o;try{o=JSON.parse(t.slice(a,b+1))}catch(e){continue}
+   if(!o||typeof o!=='object'||!(o.news||o.items||o.data))continue;
+   const key=JSON.stringify(o).slice(0,400);
+   if(seen.has(key))continue;seen.add(key);out.push(o);
+  }
+  return out;
+ }
+ async function productsFromText(strings,shortUrl,msgs){
+  const list=[];
+  let i=0;
+  for(const o of jsonObjects(strings)){
+   const news=normNews(o.news||o.items||o.data||[]);
+   if(!news.length)continue;
+   list.push({id:'json_'+(++i),name:String(o.title||o['期号']||('结构化产物 '+i)),
+    kind:'对话 JSON 产物',news:news,cover:normCover(o.cover,news),sourceUrl:shortUrl});
+  }
+  const fn=[],seen=new Set();
+  for(const s of strings)for(const m of s.matchAll(/[A-Za-z0-9_\-\u4e00-\u9fff]+\.xlsx/g)){
+   if(!seen.has(m[0])){seen.add(m[0]);fn.push(m[0])}
+  }
+  const urls=[],seenU=new Set();
+  for(const s of strings)for(const m of s.matchAll(/https?:\/\/[^\s"'<>]+\.xlsx(?:\?[^\s"'<>]*)?/gi)){
+   if(!seenU.has(m[0])){seenU.add(m[0]);urls.push(m[0])}
+  }
+  const ubases=new Set(urls.map(function(u){try{return decodeURIComponent(new URL(u).pathname.split('/').pop()||'')}catch(e){return''}}));
+  let j=0;
+  for(const u of urls){
+   j++;
+   const nm=fn[j-1]||decodeURIComponent((new URL(u)).pathname.split('/').pop()||('Excel 产物 '+j));
+   const p={id:'xlsx_'+j,name:nm,kind:'对话 xlsx 产物',news:[],cover:[],sourceUrl:u};
+   const b64=await grabBinary(u);
+   if(b64){try{const z=await xlsxToNews(b64);p.news=z.news;p.cover=z.cover}catch(e){p.fetchError=e.message}}
+   else p.fetchError='当前网络下取不回文件内容';
+   list.push(p);
+  }
+  for(let k=0;k<fn.length;k++){
+   if(ubases.has(fn[k])||list.some(function(p){return p.name===fn[k]}))continue;
+   list.push({id:'named_'+k,name:fn[k],kind:'对话中提到的 xlsx',news:[],cover:[],sourceUrl:shortUrl,
+    fetchError:'对话里只提到文件名，没有可下载直链'});
+  }
+  if(!list.length&&msgs&&msgs.length){
+   const seenT=new Set(),news=[];
+   for(const pair of msgs){
+    const t=String(pair[1]||'').replace(/\s+/g,' ').trim();
+    if(t.length<8||seenT.has(t))continue;seenT.add(t);
+    const head=t.split(/[。！？\n]/)[0].slice(0,60);
+    news.push({title:head||t.slice(0,40),summary:t.slice(0,600),
+     label:(pair[0]==='ai'||pair[0]==='assistant')?'对话正文':'用户指令',
+     level:'',sem:{},sources:[],lead:head});
+   }
+   if(news.length)list.push({id:'dialog',name:'对话正文（分享里没有结构化文件）',kind:'对话正文',
+    news:news,cover:normCover([],news),sourceUrl:shortUrl});
+  }
+  return list;
+ }
+ async function parseGrab(g,shortUrl){
+  if(g.k==='products')return{products:g.products,ch:g.ch};
+  if(g.k==='error')return{error:g.error,ch:g.ch};
+  if(g.k==='fail')return{fails:g.fails};
+  const html=g.text;
+  const m=html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  let nd=null;if(m){try{nd=JSON.parse(m[1])}catch(e){}}
+  const pp=(nd&&nd.props&&nd.props.pageProps)||{};
+  if(pp.isShareDel)return{error:'这条分享已失效：'+((pp.errorTip&&pp.errorTip.tip)||'原对话已被删除')+
+   '。请在元宝里把那个对话开启「公开分享」（一次性），再把新链接粘回工作台。',ch:g.ch};
+  const share=pp.fullChatShareData||pp.shareDetailData||null;
+  const strings=[],msgs=[];
+  if(share)walk(share,strings,msgs);else strings.push(html);
+  const list=await productsFromText(strings,shortUrl,msgs);
+  if(list.length)return{products:list,ch:g.ch};
+  if(/原对话已被删除|无法继续查看分享/.test(html))return{error:'这条分享已被删除，服务端读不到内容。请在元宝里重新「公开分享」一次。',ch:g.ch};
+  if(!share)return{error:'这个链接不是公开分享的对话（/chat/ 开头的登录态页面服务端读不到内容）。请在元宝里点「分享」生成公开链接——这是一次性动作，之后每期只在工作台页面里点。',ch:g.ch};
+  return{error:'这条对话里没有解析到可用产物',ch:g.ch};
+ }
+ async function fetchProducts(){
+  const u=(q('ybUrl').value||'').trim();
+  if(!u){toast('先粘贴元宝对话分享链接');q('ybUrl').focus();return}
+  if(!/^https?:\/\//i.test(u)){toast('链接要以 http(s):// 开头');return}
+  S.source.ybUrl=u;S.source.type='ybchat';save();
+  const sp=q('ybSpin'),btn=q('ybFetch');
+  if(sp)sp.style.display='inline-block';if(btn){btn.disabled=true;btn.textContent='取数中…'}
+  setSrcMsg('<div class="okbar">工作台正在读取这条对话的产物…（这一步发生在工作台自己这边，不用登录元宝、不用下载上传）</div>');
+  try{
+   const sl=shortLink(u);
+   const g=await grab(sl.url||u);
+   const parsed=await parseGrab(g,sl.url||u);
+   if(parsed.error)throw new Error(parsed.error);
+   if(parsed.fails)throw new Error('__NOCHANNEL__'+JSON.stringify(parsed.fails));
+   const list=[];
+   for(const p of (parsed.products||[])){
+    try{
+     let news=normNews(p.news||[]),cover=normCover(p.cover||[],news);
+     if(!news.length&&p.xlsxBase64){const z=await xlsxToNews(p.xlsxBase64);news=z.news;cover=z.cover.length?z.cover:cover}
+     if(!news.length)continue;
+     list.push({id:p.id,name:p.name||'未命名产物',kind:p.kind||'产物',news:news,
+      cover:normCover(cover,news),sourceUrl:p.sourceUrl||''});
+    }catch(e){console.warn('产物跳过',p.name,e.message)}
+   }
+   if(!list.length)throw new Error('这条对话里没有取到可用产物（列出的文件可能取不回内容）。若对话产物是 xlsx，把站点接到能跑同源函数的托管即可由服务端抓回。');
+   PRODUCTS=list;
+   const nu=q('ybNoteUrl');if(nu)nu.textContent=u.replace(/^https?:\/\//,'').slice(0,72);
+   setSrcMsg('<div class="okbar"><b>已在这页里取回 '+list.length+' 个产物</b>：'+
+    list.map(function(p){return esc(p.name)+'（'+p.news.length+' 条）'}).join('、')+
+    '。点「选择产物导入」挑一个，立即成为本期数据。<span style="opacity:.65">取数通道：'+esc(parsed.ch||'—')+'</span></div>');
+   renderList();openPicker();toast('取回 '+list.length+' 个产物，挑一个导入');
+  }catch(e){
+   let msg=e.message;
+   if(msg.indexOf('__NOCHANNEL__')===0){
+    msg='当前站点没有工作台自己的取数端点（GitHub Pages 是纯静态，跑不了 functions/api/yuanbao.js），'+
+     '这次网络下公开只读通道也都没通。一次性：把仓库接到能跑同源函数的托管'+
+     '（例如 Cloudflare Pages 直接连这同一个 GitHub 仓库，functions/api/ 自动生效），'+
+     '之后每期只在这个页面里点，不用再做任何事。';
+   }else if(msg==='Failed to fetch'||msg==='TypeError: Failed to fetch'){
+    msg='工作台还没挂上自己的取数端点：把随包的 functions/api/yuanbao.js 随站点部署一次（同源 api/yuanbao）。'+
+     '纯 GitHub Pages 没有服务端，需要换成能跑同源函数的托管；挂好后每期只在这页点。';
+   }
+   setSrcMsg('<div class="errbar"><b>工作台取数没成功</b>：'+esc(msg)+'</div>');
+   toast('取数没成功，看下方红字');
+  }finally{
+   if(sp)sp.style.display='none';if(btn){btn.disabled=false;btn.textContent='拉取这个对话的产物'}
+  }
+ }
+ function applyProduct(i){
+  const p=PRODUCTS[i];if(!p)return false;
+  const news=p.news,cover=p.cover;
+  if(!news.length){toast('这个产物里没有可用条目');return false}
+  P.news=news;P.cover=cover;
+  S.source.type='ybchat';S.source.ybPicked=p.name;
+  S.newsView=null;S.script.limit=0;S.userImported=true;
+  S.importedPayload={news:JSON.parse(JSON.stringify(news)),cover:JSON.parse(JSON.stringify(cover))};
+  S.script.body=news.map(function(n){return n.title+'。'+String(n.summary).replace(/\n/g,'').replace(/\u3000/g,'')}).join('\n\n');
+  syncAllNews();
+  if($('bodyText'))$('bodyText').value=S.script.body;
+  renderBodyEditors();
+  S.card.index=1;if($('cardTag'))$('cardTag').textContent='第 1 / '+news.length+' 张';
+  setSrcMsg('<div class="okbar"><b>已导入「'+esc(p.name)+'」</b>：文稿 '+news.length+' 条 / 封面 '+cover.length+
+   ' 条，直接成为本期数据。要换一个，再点「选择产物导入」——全程都在这一页。</div>');
+  save();render();renderSrcMsg();gates();renderStatus();
+  closePicker();toast('已导入：'+p.name);
+  return true;
+ }
+ function renderList(){
+  const box=q('ybProdList');if(!box)return;
+  if(!PRODUCTS.length){
+   box.innerHTML='<div class="ybm-empty"><b>还没有取回产物。</b><br>在上面的「对话链接」框里粘好链接，点「拉取这个对话的产物」——工作台会自己把这条对话里的多个产物列在下面，不用下载、不用上传、不用登录元宝。</div>';
+   return;
+  }
+  box.innerHTML=PRODUCTS.map(function(p,i){
+   return '<div class="ybm-item"><div class="ybm-ic">'+(String(p.kind).indexOf('xlsx')>-1?'XLS':'JSON')+'</div>'+
+    '<div class="ybm-meta"><b>'+x(p.name)+'</b><span>'+x(p.kind)+' · '+p.news.length+' 条'+
+    (p.sourceUrl?('　|　'+x(String(p.sourceUrl).slice(0,54))):'')+'</span></div>'+
+    '<div class="ybm-ops"><button class="ybm-btn" data-pv="'+i+'">预览</button>'+
+    '<button class="ybm-btn go" data-go="'+i+'">导入这一个</button></div></div>';
+  }).join('');
+  box.querySelectorAll('[data-go]').forEach(function(b){b.onclick=function(){applyProduct(+b.dataset.go)}});
+  box.querySelectorAll('[data-pv]').forEach(function(b){b.onclick=function(){
+   const ns=PRODUCTS[+b.dataset.pv].news,pv=q('ybPreview');pv.style.display='block';
+   pv.innerHTML='<b>前 5 条预览</b><br>'+ns.slice(0,5).map(function(n,k){return(k+1)+'. '+x(n.title)+'　<span style="opacity:.6">'+x(n.label)+'</span>'}).join('<br>');
+  }});
+ }
+ function openPicker(){renderList();if(q('ybModal'))q('ybModal').style.display='flex'}
+ function closePicker(){if(q('ybModal'))q('ybModal').style.display='none'}
+ if(q('ybFetch'))q('ybFetch').onclick=fetchProducts;
+ if(q('ybUrl'))q('ybUrl').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();fetchProducts()}});
+ if(q('ybPick'))q('ybPick').onclick=openPicker;
+ if(q('ybClose'))q('ybClose').onclick=closePicker;
+ if(q('ybModal'))q('ybModal').addEventListener('click',function(e){if(e.target===q('ybModal'))closePicker()});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')closePicker()});
+ const chip=document.querySelector('#srcTypes .chip[data-t="ybchat"]');
+ if(chip)chip.addEventListener('click',function(){setTimeout(function(){if(q('ybUrl'))q('ybUrl').focus()},80)});
+ window.YuanbaoWorkbench={fetch:fetchProducts,picker:openPicker,products:function(){return PRODUCTS},
+  import:function(i){return applyProduct(i)}};
+})();
 fillFontSelects();
 render();
 syncTypeUI(true);
