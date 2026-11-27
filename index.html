@@ -260,17 +260,20 @@ footer{max-width:1680px;margin:auto;padding:14px 22px 40px;color:var(--dim);font
 .propsbody{flex:1;overflow-y:auto;padding:14px 16px 34px;min-width:0}
 #propsBody>.panel{margin:0 0 16px;border-radius:10px;scroll-margin-top:0}
 #propsBody>.panel.hide{display:none!important}
-body.fold-l .workbench{grid-template-columns:0 minmax(0,1fr) 430px}
-body.fold-l .navrail{display:none}
-body.fold-r .workbench{grid-template-columns:78px minmax(0,1fr) 0}
-body.fold-r .propsrail{display:none}
-/* v37 界面级全屏：不依赖 Fullscreen API，应用窗口内必定生效 */
-body.ui-full header{display:none!important}
-body.ui-full .workbench{grid-template-columns:minmax(0,1fr)!important;height:100vh}
+body.fold-l .workbench{grid-template-columns:0 minmax(0,1fr) 430px!important}
+body.fold-l .navrail{display:none!important;visibility:hidden!important;width:0!important;min-width:0!important;max-width:0!important;overflow:hidden!important}
+body.fold-r .workbench{grid-template-columns:78px minmax(0,1fr) 0!important}
+body.fold-r .propsrail{display:none!important;visibility:hidden!important;width:0!important;min-width:0!important;max-width:0!important;overflow:hidden!important}
+/* v38 界面级全屏：只隐藏品牌/日期/窗口条/版本，**报头右上按钮条永远保留**，
+   否则进入全屏后「退出全屏」「展开左栏」按钮一起消失，用户就再也点不回来。 */
+body.ui-full .hd .brand,body.ui-full .hd .meta,body.ui-full .hd .build,body.ui-full header .winbar{display:none!important}
+body.ui-full header{position:sticky;top:0;z-index:80}
+body.ui-full .hd .hdtop{display:flex!important;margin-left:auto}
+body.ui-full .workbench{grid-template-columns:minmax(0,1fr)!important;height:calc(100vh - 46px)}
 body.ui-full .navrail,body.ui-full .propsrail{display:none!important}
-body.ui-full .stage{height:100vh;overflow:auto}
-/* v37 窄屏让响应式单列接管，别被折叠的内联三列盖住 */
-@media(max-width:900px){body.fold-l .workbench,body.fold-r .workbench{grid-template-columns:1fr}}
+body.ui-full .stage{height:calc(100vh - 46px);overflow:auto}
+/* v38 窄屏让响应式单列接管 */
+@media(max-width:900px){body.fold-l .workbench,body.fold-r .workbench{grid-template-columns:1fr!important}}
 @media(max-width:1200px){.workbench{grid-template-columns:64px minmax(0,1fr) 360px}}
 @media(max-width:900px){.workbench{grid-template-columns:1fr;height:auto}.navrail,.propsrail{display:none}.stage{overflow:visible}}
 /* 全屏播放器 */
@@ -601,13 +604,13 @@ body.doc-mini #docMini{display:block}
    <div class="okbar" id="bgmState">当前背景音乐：<b>内置配乐（默认）</b></div>
    <div class="mixbox">
     <div class="hd">混声设置 · 只有三项（预览独立播放，导出按同一配置混音）</div>
-    <div class="kv"><label class="lb" style="width:64px;flex:0 0 64px">人声音量</label><input type="range" id="mixVoice" min="0" max="200" value="135"><b id="mixVoiceV">1.35</b></div>
-    <div class="kv"><label class="lb" style="width:64px;flex:0 0 64px">配乐音量</label><input type="range" id="mixBgm" min="0" max="100" value="30"><b id="mixBgmV">0.30</b></div>
-    <div class="kv"><label class="lb" style="width:64px;flex:0 0 64px">总音量</label><input type="range" id="mixMaster" min="-6" max="12" step="0.5" value="3"><b id="mixMasterV">3.0 dB</b></div>
-    <div class="okbar" id="mixState">人声 1.35 · 配乐 0.30 · 总增益 +3.0 dB</div>
+    <div class="kv"><label class="lb" style="width:64px;flex:0 0 64px">人声音量</label><input type="range" id="mixVoice" min="0" max="200" value="100"><b id="mixVoiceV">1.00</b></div>
+    <div class="kv"><label class="lb" style="width:64px;flex:0 0 64px">配乐音量</label><input type="range" id="mixBgm" min="0" max="100" value="18"><b id="mixBgmV">0.18</b></div>
+    <div class="kv"><label class="lb" style="width:64px;flex:0 0 64px">总音量</label><input type="range" id="mixMaster" min="-6" max="12" step="0.5" value="0"><b id="mixMasterV">0.0 dB</b></div>
+    <div class="okbar" id="mixState">人声 1.00 · 配乐 0.18 · 总增益 0.0 dB</div>
    </div>
    <audio id="bgmAudio" preload="auto"></audio>
-   <p class="hint">「▶ 试听」再点一次即停止，一个按钮完成试听 / 停止；试听与「设为背景」互不相干。音频文件可以直接拖进虚线框，也可以点「选择文件」。默认内置配乐随包附带，换包刷新即生效；自定义音频的授权由上传者自行核对。默认人声 1.35 倍、总增益 +3 dB；混声设置只有人声音量、配乐音量、总音量三项。</p>
+   <p class="hint">「▶ 试听」再点一次即停止，一个按钮完成试听 / 停止；试听与「设为背景」互不相干。音频文件可以直接拖进虚线框，也可以点「选择文件」。默认内置配乐随包附带，换包刷新即生效；自定义音频的授权由上传者自行核对。默认人声 1.00 / 配乐 0.18 / 总增益 0.0 dB（与导出链路同源，不额外放大）；混声设置只有人声音量、配乐音量、总音量三项。</p>
   </div></section>
 
   <!-- 7 字幕 -->
@@ -632,7 +635,7 @@ body.doc-mini #docMini{display:block}
    <div class="fld"><span>字体</span><select id="subFont" data-font></select></div>
     <div class="fld"><span>字间距 <b id="subLetterV">0</b> px</span><input type="range" id="subLetter" min="0" max="12" value="0" style="max-width:150px"></div>
    </div>
-   <div class="row" style="margin-top:10px"><label class="lb" style="width:112px;flex:0 0 112px">字幕 / 人声偏移</label><input type="number" id="subOffset" min="-2" max="2" step="0.1" value="-0.2" style="width:90px"><span class="mini">秒 · 正数字幕延后、负数提前；<b>默认 -0.2 秒</b>，消除字幕整体比人声慢半拍。只平移软字幕轨、SRT/ASS 与播放器字幕，不改音频与画面。听一遍觉得对不上就微调，重新导出生效。</span></div>
+   <div class="row" style="margin-top:10px"><label class="lb" style="width:112px;flex:0 0 112px">字幕 / 人声偏移</label><input type="number" id="subOffset" min="-2" max="2" step="0.1" value="-0.4" style="width:90px"><span class="mini">秒 · 正数字幕延后、负数提前；<b>默认 -0.4 秒</b>，消除字幕整体比人声慢半拍。只平移软字幕轨、SRT/ASS 与播放器字幕，不改音频与画面。听一遍觉得对不上就微调，重新导出生效。</span></div>
    <div class="row" style="margin-top:10px"><span class="mini" id="subSafeEcho">字幕占位：开</span><span class="mini">底色（样式 / 颜色 / 透明度）与字间距独立可调；行数 1–5 全链路同源；片头片尾不显示字幕</span></div>
    <div class="row" style="margin-top:12px"><button id="btnExportSrtCfg">⬇ 导出字幕配置</button><span class="mini" id="subCfgStat"></span></div>
    <div class="okbar">片头用本期封面、片尾只留「感谢收听 · 下期见」与免责声明，<b>两者都不画字幕块</b>。资讯卡：字幕逐字显现、卡片内容完整，每行按可用宽度填满、左对齐，行数 1–5 下拉，页面 / SRT / ASS / 成品同源。<b>字幕烧录在画面上</b>；SRT / ASS 可单独导出，句起点与句长取逐句合成的真实人声时长。</div>
@@ -723,7 +726,7 @@ body.doc-mini #docMini{display:block}
       <label class="tfield"><span>取色</span><label class="opt"><input type="checkbox" id="cvDateAutoColor"> 随主题</label></label>
      </div></div>
 
-    <div class="tgroup"><h3>封面 · 条目文字 <small>默认 站酷庆科黄油体 · 47px / 字距 3 / 行距 1.2 / 常规 400 / 色 #606C7B；改动字号后按设定值绘制、10 条全文自动换行，画布尺寸恒定 9:16，页脚随内容往下移动让位</small></h3>
+    <div class="tgroup"><h3>封面 · 条目文字 <small>默认 文泉驿微米黑 · 47px / 字距 3 / 行距 1.2 / 常规 400 / 色 #606C7B；改动字号后按设定值绘制、10 条全文自动换行，画布尺寸恒定 9:16，页脚随内容往下移动让位</small></h3>
      <div class="tgrid">
       <label class="tfield"><span>字体</span><select id="cvItemFont" data-font></select></label>
       <label class="tfield"><span>字号</span><input type="number" id="cvItemFs" min="12" max="90" step="1" value="47"><i class="u">px</i></label>
@@ -1872,7 +1875,7 @@ const DEF={
  script:{opening:openingTemplate(ISSUE_AUTO),windowOn:true,windowText:P.window_statement,
          body:P.news.map(n=>n.title+'。'+String(n.summary).replace(/\n/g,'').replace(/\u3000/g,'')).join('\n\n'),closing:P.close,limit:0},
    cover:{theme:'focus_paper',tpl:'equal',size:'portrait',gap:'standard',count:10,sep:'lines',altBands:false,sepStrength:1,sepAccent:false,
-             focusLabel:false,itemFont:'zc_hy',itemFs:47,itemSpace:3,itemLine:1.2,itemColor:'#606C7B',itemAutoColor:false,itemBold:false,itemWeight:400,
+             focusLabel:false,itemFont:'wqy',itemFs:47,itemSpace:3,itemLine:1.2,itemColor:'#606C7B',itemAutoColor:false,itemBold:false,itemWeight:400,
              itemFsTouched:false,itemFsKeepAll:false,
           text:JSON.parse(JSON.stringify(COVER_TEXT_DEF)),
           gapPx:15,
@@ -1881,9 +1884,9 @@ const DEF={
         showDate:P.cover_header.show_date,showIssue:P.cover_header.show_issue},
   card:{tpl:'frame_card',theme:'focus_paper',size:'portrait',index:1,
         category_art:'off',category_strength:'light',text:JSON.parse(JSON.stringify(CARD_TEXT_DEF))},
- voice:{mode:'edge',voice:'zh-CN-YunyangNeural',rate:1,volume:1.35,upload:null},
- bgm:{file:null,url:null,background:BUILTIN_BGM,sel:null,volume:.30},
- mix:{master_db:3,duck:false,duck_db:-8,fade_in:0,fade_out:0},voiceConc:6,
+ voice:{mode:'edge',voice:'zh-CN-YunyangNeural',rate:1,volume:1.0,upload:null},
+ bgm:{file:null,url:null,background:BUILTIN_BGM,sel:null,volume:.18},
+ mix:{master_db:0,duck:false,duck_db:-8,fade_in:0,fade_out:0},voiceConc:6,
  subtitle:JSON.parse(JSON.stringify(SUB0)),
  typewriter:JSON.parse(JSON.stringify(TW0)),
  export_size:P.export_size||'portrait',export_format:'mp4',
@@ -2005,6 +2008,18 @@ S.playing=false;S.playPos=0;S.playIdx=0;
 S.voiceDurs=null;S.leadDurs=[];S.timeline=null;
 S.typewriter=Object.assign({},DEF.typewriter,S.typewriter||{});
 S.typewriter.on=true;S.typewriter.target='subtitle';
+/* v38 一次性迁移：封面条目默认改文泉、混音默认与后端对齐。
+   旧缓存（zc_hy / 1.35 / 0.30 / +3dB、以及被拖到 2.00 / 0.20 / 12dB 的值）
+   不再沿用；用户之后在界面上改的值保留，迁移只跑一次。 */
+try{
+ if(!S.__v38){
+  S.cover.itemFont=DEF.cover.itemFont;
+  S.voice.volume=DEF.voice.volume;
+  S.bgm.volume=DEF.bgm.volume;
+  S.mix.master_db=DEF.mix.master_db;
+  S.__v38=true;
+ }
+}catch(e){}
 /* 复位后的状态即时写回本地存储 */
 try{save()}catch(e){}
 /* */
@@ -4421,8 +4436,8 @@ function gates(){
             m[at('5')]===true&&m[at('8')]===true&&m[at('1')]===true})()&&
    String(npDrawLine).indexOf('valueDigitMask(t)')>=0&&
    String(fillTextSpaced).indexOf('valueDigitMask(t)')>=0],
-  ['v28 默认配置：封面条目 zc_hy/47/#606C7B，卡片正文 zc_hy，字幕字体可选',
-   DEF.cover.itemFont==='zc_hy'&&DEF.cover.itemFs===47&&String(DEF.cover.itemColor).toUpperCase()==='#606C7B'&&
+  ['v38 默认配置：封面条目 wqy(文泉驿微米黑)/47/#606C7B，卡片正文 zc_hy，字幕字体可选',
+   DEF.cover.itemFont==='wqy'&&DEF.cover.itemFs===47&&String(DEF.cover.itemColor).toUpperCase()==='#606C7B'&&
    CARD_TEXT_DEF.body.font==='zc_hy'&&+$('cvItemFs').min>0&&
    !!$('subFont')&&typeof subFontKey==='function'&&typeof subFontName==='function'&&
    String(subtitleCfg).indexOf('font_name:subFontName')>=0&&
@@ -6337,55 +6352,42 @@ bindSeek($('pbar'));bindSeek($('timeline'));
  });
 });
 
-/* v37 折叠：显式状态 + 渲染后复位 + 持久化 + 窄屏交回响应式，杜绝「点不动 / 展开回不来」 */
+/* v38 折叠：只切 class + 按钮文案，布局全部交给 CSS !important。
+   不再写内联 grid（会被 render 覆盖）、不再持久化（上次折叠状态会莫名其妙带进新会话）、
+   不再调 render()（重且可能干扰）——两次点击必定可逆。 */
 function applyFold(){
  const l=document.body.classList.contains('fold-l'),r=document.body.classList.contains('fold-r');
- const wb=$('workbench');
- if(wb){
-  if(window.innerWidth<=900||document.body.classList.contains('ui-full'))wb.style.removeProperty('grid-template-columns');
-  else wb.style.gridTemplateColumns=(l?'0':'78px')+' minmax(0,1fr) '+(r?'0':'430px');
- }
+ const wb=$('workbench');if(wb)wb.style.removeProperty('grid-template-columns');
  const nl=$('navrail'),pr=$('propsrail');
- if(nl)nl.style.display=l?'none':'flex';
- if(pr)pr.style.display=r?'none':'flex';
+ if(nl){nl.style.removeProperty('display');nl.style.removeProperty('visibility');}
+ if(pr){pr.style.removeProperty('display');pr.style.removeProperty('visibility');}
  const bl=$('btnFoldL'),br=$('btnFoldR');
  if(bl){bl.textContent=l?'▤ 展开左栏':'◧ 收起左栏';bl.setAttribute('aria-pressed',String(l));}
  if(br){br.textContent=r?'展开右栏 ▤':'收起右栏 ◨';br.setAttribute('aria-pressed',String(r));}
 }
-function toggleFold(side){
- const on=!document.body.classList.contains('fold-'+side);
- document.body.classList.toggle('fold-'+side,on);
- try{S.uiFold=S.uiFold||{};S.uiFold[side]=on;save();}catch(e){}
- render();               /* render 尾部也会 applyFold；再补一帧防止 DOM 重建丢样式 */
+function toggleFold(side){const key='fold-'+side;
+ document.body.classList.toggle(key);
  applyFold();requestAnimationFrame(applyFold);
 }
-try{const _uf=(S&&S.uiFold)||{};['l','r'].forEach(s=>document.body.classList.toggle('fold-'+s,!!_uf[s]));}catch(e){}
+document.body.classList.remove('fold-l','fold-r');   /* 每次启动默认展开 */
 applyFold();
 $('btnFoldL').onclick=()=>toggleFold('l');
 $('btnFoldR').onclick=()=>toggleFold('r');
 window.addEventListener('resize',applyFold);
-/* v37 全屏界面：UI 级全屏（隐藏报头/左右栏、舞台铺满）必定生效，
-   再尽力尝试原生 Fullscreen；应用窗口拒绝原生全屏时不再「点了没反应」。 */
+/* v38 全屏：纯界面级，**完全不调用原生 Fullscreen API**。
+   上一版同时开两套全屏，浏览器按 Esc 退出原生全屏时页面收不到 keydown，
+   UI 全屏就卡住；加上 header 被整个隐藏，按钮也点不到 →「退不出全屏」。
+   现在只有一套状态，报头右上按钮条始终可见，按钮 / Esc 都能退出。 */
 function setUIFull(on){
  document.body.classList.toggle('ui-full',on);
  const b=$('btnFullUI');
  if(b){b.textContent=on?'⛶ 退出全屏界面':'⛶ 全屏界面';b.setAttribute('aria-pressed',String(on));}
- applyFold();try{render();}catch(e){}
+ applyFold();requestAnimationFrame(applyFold);
 }
 window.__setUIFull=setUIFull;
-$('btnFullUI').onclick=async()=>{
- const on=!document.body.classList.contains('ui-full');
- setUIFull(on);
- try{
-  if(on&&!document.fullscreenElement){
-   const de=document.documentElement,fn=de.requestFullscreen||de.webkitRequestFullscreen||de.msRequestFullscreen;
-   if(fn)await fn.call(de);
-  }else if(!on&&document.fullscreenElement){
-   const ex=document.exitFullscreen||document.webkitExitFullscreen;if(ex)await ex.call(document);
-  }
- }catch(e){/* 原生全屏被拒绝时 UI 级全屏仍生效，不再静默吞掉 */}
-};
+$('btnFullUI').onclick=()=>setUIFull(!document.body.classList.contains('ui-full'));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('ui-full'))setUIFull(false);});
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.body.classList.contains('ui-full'))setUIFull(false);});
 /* 浏览器内按帧推进录制：canvas.captureStream + 同一份人声音轨 -> MediaRecorder(WebM) */
 $('btnRecordWebM').onclick=async()=>{
  const st=$('recState');
@@ -6503,8 +6505,8 @@ function exportMp3(){
    正数字幕延后、负数提前；默认 -0.2 秒，消除整体慢半拍。*/
 function subSyncOffset(){
  const e=document.getElementById('subOffset');
- const v=e?parseFloat(e.value):-0.2;
- return Math.max(-2,Math.min(2,isFinite(v)?v:-0.2));
+ const v=e?parseFloat(e.value):-0.4;
+ return Math.max(-2,Math.min(2,isFinite(v)?v:-0.4));
 }
 window.__subSyncOffset=subSyncOffset;
 function srtTime(x){const h=Math.floor(x/3600),m=Math.floor(x%3600/60),s=Math.floor(x%60),ms=Math.round((x%1)*1000);

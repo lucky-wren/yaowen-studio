@@ -360,13 +360,18 @@
     var twOn = !!(S.typewriter && S.typewriter.on);
     var twFrm = false;
     if (!twOn) return 'still';
+    /* v38：字幕逻辑时间 = 画面时刻 - 偏移（偏移为负 → 字幕提前）。
+       与 index.html 里 drawPlayer 的 _adjPos 用同一份 __subSyncOffset()，
+       否则成片逐字帧仍按原节奏出，字幕看起来还是比人声慢。 */
+    var so = (typeof window.__subSyncOffset === 'function') ? window.__subSyncOffset() : 0;
+    var lt = Math.max(0, t - so);
     if (ev && ev.ct) {
-      var c = twFrm ? window.CharTimes.countAt(ev.ct, t) : window.CharTimes.subCountAt(ev.ct, t);
+      var c = twFrm ? window.CharTimes.countAt(ev.ct, lt) : window.CharTimes.subCountAt(ev.ct, lt);
       return (ev.subMode ? 'sub:' : '') + c;
     }
     if (ev && ev.subMode) {
       /* 字幕块内逐字：以「已显字数」为键，跨字才出帧 */
-      return 'sub:' + Math.floor(Math.max(0, Math.min(1, t / Math.max(.2, dur))) * ev.nSub);
+      return 'sub:' + Math.floor(Math.max(0, Math.min(1, lt / Math.max(.2, dur))) * ev.nSub);
     }
     if (!twFrm) return 'still';
     var rv;
@@ -408,6 +413,9 @@
       for (i = 1; i <= nSub; i++) ts.push(leadT + subT * i / nSub);
     }
     // 不把 dur 作为帧时刻：最后一帧由 flushPending(dur) 延伸到句末
+    /* v38：把逐字候选帧时刻整体提前 |offset|，画面时间戳不变、音频不动 */
+    var so = (typeof window.__subSyncOffset === 'function') ? window.__subSyncOffset() : 0;
+    if (so) ts = ts.map(function (x) { return Math.max(0, x + so); });
     ts.sort(function (a, b) { return a - b; });
     var out = [], last = -1;
     for (i = 0; i < ts.length; i++) {

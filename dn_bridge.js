@@ -126,6 +126,8 @@
           cover_png: d.cover_png, card_pngs: d.card_pngs,
           sentences: d.sentences, srt: d.srt, ass: d.ass,
           bgm_file: d.bgm_file, burn_subtitle: true,
+          subtitle_offset_s: (typeof window.__subSyncOffset === 'function')
+                             ? window.__subSyncOffset() : -0.4,
           cover_seconds: 3.0, card_seconds: 4.0, codec: 'h264'
         })
       }).then(function (r) { return r.json(); }).then(function (j) {
