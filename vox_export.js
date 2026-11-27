@@ -1127,7 +1127,7 @@
   function hide(el) { if (el && el.parentElement) el.parentElement.style.display = 'none'; }
   hide(document.getElementById('btnRecordWebM'));
   hide(document.getElementById('btnGhSetup'));
-  hide(document.getElementById('subOffset'));
+  /* v37 字幕偏移控件不再隐藏：默认 -0.2 秒，由用户自行微调 */
   var panel = document.getElementById('ghSetup'); if (panel) panel.style.display = 'none';
   if (note) note.className = 'okbar';
   say('<b>导入数据 → 逐句合成人声 → 播放即时顺畅 → 点导出立即下载。</b>成片在合成后台备好、播放期间自动让路；导出不再编码；整句字幕与真人声共用同一播放头，每句一张静态画面；不登录、不写回、不排队、不依赖旧成品。');
