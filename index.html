@@ -227,7 +227,11 @@ footer{max-width:1680px;margin:auto;padding:14px 22px 40px;color:var(--dim);font
 .hd .build{margin-left:0}
 .hdtop{display:flex;align-items:center;gap:7px}
 .hdtop .tbtn{font-size:11px;padding:5px 10px}
-.workbench{display:grid;grid-template-columns:78px minmax(0,1fr) 430px;height:calc(100vh - 96px);min-height:620px;max-width:1920px;margin:0 auto;align-items:stretch}
+/* v39：三栏显式锁定到各自的列。折叠时 rail 仍是 grid item，绝不 display:none。 */
+.workbench{display:grid;--col-l:78px;--col-r:430px;grid-template-columns:var(--col-l) minmax(0,1fr) var(--col-r);height:calc(100vh - 96px);min-height:620px;max-width:1920px;margin:0 auto;align-items:stretch}
+#navrail{grid-column:1;grid-row:1}
+#stage{grid-column:2;grid-row:1}
+#propsrail{grid-column:3;grid-row:1}
 .navrail{background:linear-gradient(180deg,#0e1c2c,#091520);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0;overflow:hidden}
 .navcap{font:10px var(--mono);color:var(--dim);text-align:center;padding:12px 0 4px;letter-spacing:1.2px}
 .flow{display:flex;flex-direction:column;gap:4px;padding:4px 8px;max-width:none;margin:0;flex:1;overflow-y:auto;align-items:stretch}
@@ -260,22 +264,33 @@ footer{max-width:1680px;margin:auto;padding:14px 22px 40px;color:var(--dim);font
 .propsbody{flex:1;overflow-y:auto;padding:14px 16px 34px;min-width:0}
 #propsBody>.panel{margin:0 0 16px;border-radius:10px;scroll-margin-top:0}
 #propsBody>.panel.hide{display:none!important}
-body.fold-l .workbench{grid-template-columns:0 minmax(0,1fr) 430px!important}
-body.fold-l .navrail{display:none!important;visibility:hidden!important;width:0!important;min-width:0!important;max-width:0!important;overflow:hidden!important}
-body.fold-r .workbench{grid-template-columns:78px minmax(0,1fr) 0!important}
-body.fold-r .propsrail{display:none!important;visibility:hidden!important;width:0!important;min-width:0!important;max-width:0!important;overflow:hidden!important}
-/* v38 界面级全屏：只隐藏品牌/日期/窗口条/版本，**报头右上按钮条永远保留**，
-   否则进入全屏后「退出全屏」「展开左栏」按钮一起消失，用户就再也点不回来。 */
+/* v39 折叠：只把对应列宽清零 + rail 视觉尺寸清零，rail 仍占自己的 grid 单元。
+   v38 的 display:none 会让 Grid 自动放置把 stage 挤进第 1 列（0px），
+   propsrail 占满中间 1fr —— 这正是「收起左栏后预览台消失」的原因。 */
+body.fold-l .workbench{--col-l:0px}
+body.fold-r .workbench{--col-r:0px}
+body.fold-l.fold-r .workbench{--col-l:0px;--col-r:0px}
+body.fold-l #navrail,body.ui-full #navrail,
+body.fold-r #propsrail,body.ui-full #propsrail{
+  width:0!important;min-width:0!important;max-width:0!important;
+  padding:0!important;border:0!important;overflow:hidden!important;
+  visibility:hidden!important;pointer-events:none!important;
+}
+/* v38 界面级全屏：只隐藏品牌/日期/窗口条/版本，**报头右上按钮条永远保留**。
+   v39：全屏同样用 0 / 1fr / 0 三列，stage 仍在第 2 列，预览台不消失。 */
 body.ui-full .hd .brand,body.ui-full .hd .meta,body.ui-full .hd .build,body.ui-full header .winbar{display:none!important}
 body.ui-full header{position:sticky;top:0;z-index:80}
 body.ui-full .hd .hdtop{display:flex!important;margin-left:auto}
-body.ui-full .workbench{grid-template-columns:minmax(0,1fr)!important;height:calc(100vh - 46px)}
-body.ui-full .navrail,body.ui-full .propsrail{display:none!important}
+body.ui-full .workbench{--col-l:0px;--col-r:0px;height:calc(100vh - 46px)}
 body.ui-full .stage{height:calc(100vh - 46px);overflow:auto}
-/* v38 窄屏让响应式单列接管 */
-@media(max-width:900px){body.fold-l .workbench,body.fold-r .workbench{grid-template-columns:1fr!important}}
-@media(max-width:1200px){.workbench{grid-template-columns:64px minmax(0,1fr) 360px}}
-@media(max-width:900px){.workbench{grid-template-columns:1fr;height:auto}.navrail,.propsrail{display:none}.stage{overflow:visible}}
+@media(max-width:1200px){.workbench{--col-l:64px;--col-r:360px}}
+@media(max-width:900px){
+ .workbench,body.fold-l .workbench,body.fold-r .workbench,body.ui-full .workbench{grid-template-columns:minmax(0,1fr)!important;height:auto}
+ #navrail,#propsrail{display:none!important}
+ #stage{grid-column:1!important}
+ body.ui-full .stage{height:auto!important}
+ .stage{overflow:visible}
+}
 /* 全屏播放器 */
 #playerBox:fullscreen{display:flex!important;flex-direction:column;justify-content:center;background:#000;padding:12px;gap:8px}
 #playerBox:fullscreen .pstage{aspect-ratio:auto;max-height:none;height:80vh;width:100%;border:0;border-radius:0;background:#000}
@@ -5431,8 +5446,18 @@ async function buildMergedTrack(){
  return MERGED;
 }
 function masterGain(){return Math.pow(10,(+S.mix.master_db||0)/20)}
-function voiceGainValue(){return Math.max(0,+S.voice.volume*masterGain())}
-function bgmGainValue(){return Math.max(0,+S.bgm.volume*masterGain())}
+/* v39 唯一音量口径：预览、页面成片、服务端导出都读这一份。
+   voice / bgm 是「已含总增益的最终增益」，与 WebAudio GainNode、
+   PCM 混合、ffmpeg volume= 三处一一对应，不再各自算一遍。 */
+function mixGains(){
+ const mg=masterGain();
+ return {voice:Math.max(0,+S.voice.volume*mg),bgm:Math.max(0,+S.bgm.volume*mg),
+  master:mg,voice_raw:+S.voice.volume||0,bgm_raw:+S.bgm.volume||0,
+  master_db:+S.mix.master_db||0,bgm_on:!!S.bgm.background};
+}
+window.__mixGains=mixGains;
+function voiceGainValue(){return mixGains().voice}
+function bgmGainValue(){return mixGains().bgm}
 /* ---------- 配乐资源层：试听与预览共用同一份已取完的文件 ----------
    旧版预览直接 <audio src="assets/bgm/…"> 边下边播 5.5MB MP3，网络一抖就卡；
    试听又另起一个 AudioContext，两者互相干扰。这里统一成「一次性取完 → objectURL」。 */

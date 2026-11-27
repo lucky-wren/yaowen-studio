@@ -51,8 +51,29 @@
   }
 
   /* ---------- 2. 通用：从原页面读到当前画布与文稿（只读） ---------- */
+  /* v39：服务端导出必须用「界面当前」音量，不能再用后端固定值 */
+  function mixNow() {
+    try {
+      if (typeof window.__mixGains === 'function') return window.__mixGains();
+      var S = window.S || {}, mg = Math.pow(10, (+((S.mix || {}).master_db) || 0) / 20);
+      return { voice: Math.max(0, (+((S.voice || {}).volume) || 0) * mg),
+               bgm: Math.max(0, (+((S.bgm || {}).volume) || 0) * mg),
+               master: mg, voice_raw: +((S.voice || {}).volume) || 0,
+               bgm_raw: +((S.bgm || {}).volume) || 0,
+               master_db: +((S.mix || {}).master_db) || 0,
+               bgm_on: !!(S.bgm && S.bgm.background) };
+    } catch (e) {
+      return { voice: 1, bgm: 0.18, master: 1, voice_raw: 1, bgm_raw: 0.18,
+               master_db: 0, bgm_on: true };
+    }
+  }
   function grab() {
-    var out = { cover_png: '', card_pngs: [], sentences: [], srt: '', ass: '', bgm_file: '内置配乐.mp3' };
+    var mx = mixNow();
+    var out = { cover_png: '', card_pngs: [], sentences: [], srt: '', ass: '', bgm_file: '内置配乐.mp3',
+                mix: { voice_volume: mx.voice, bgm_volume: mx.bgm,
+                       voice_volume_raw: mx.voice_raw, bgm_volume_raw: mx.bgm_raw,
+                       master_gain_db: mx.master_db },
+                bgm_enabled: mx.bgm_on };
     ['cvCanvas', 'cdCanvas', 'plCanvas', 'docMiniCv'].forEach(function (id) {
       var c = document.getElementById(id);
       if (!c || !c.width || !c.height) return;
@@ -119,13 +140,17 @@
       var d = grab();
       if (!d.cover_png) { log(box, '没读到封面画布，先在 03 区渲染一次封面再点。', true); return; }
       btn.disabled = true; btn.textContent = '提交中…';
-      log(box, '已提交服务端作业，正在合成…');
+      log(box, '已提交服务端作业 · 人声 ×' + (+d.mix.voice_volume).toFixed(3)
+             + ' / 配乐 ×' + (+d.mix.bgm_volume).toFixed(3)
+             + '（总增益 ' + (+d.mix.master_gain_db).toFixed(1) + ' dB，与预览同源）'
+             + (d.bgm_enabled === false ? ' · 不配乐' : '') + '，正在合成…');
       fetch(API + '/export/jobs', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cover_png: d.cover_png, card_pngs: d.card_pngs,
           sentences: d.sentences, srt: d.srt, ass: d.ass,
           bgm_file: d.bgm_file, burn_subtitle: true,
+          mix: d.mix, bgm_enabled: d.bgm_enabled !== false,
           subtitle_offset_s: (typeof window.__subSyncOffset === 'function')
                              ? window.__subSyncOffset() : -0.4,
           cover_seconds: 3.0, card_seconds: 4.0, codec: 'h264'

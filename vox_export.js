@@ -540,20 +540,23 @@
     var builtin = (typeof BUILTIN_BGM !== 'undefined') ? BUILTIN_BGM : 'assets/bgm/内置配乐.mp3';
     var src = (bg.url && bg.background === bg.file) ? bg.url
             : (bg.background ? builtin : null);
-    var b = null, bn = 0, bsr = pcm.sampleRate, vol = 0;
+    /* v39：直接取预览同一份增益。旧实现把配乐音量 clamp 到 1 且只在最后一乘
+       总增益，与预览的 GainNode 口径漂移；现在 voice/bgm 各自已含总增益。 */
+    var g = (typeof window.__mixGains === 'function') ? window.__mixGains()
+          : { voice: Math.max(0, +(st.voice && st.voice.volume) || 0) * Math.pow(10, (+mx.master_db || 0) / 20),
+              bgm: Math.max(0, +bg.volume || 0) * Math.pow(10, (+mx.master_db || 0) / 20) };
+    var b = null, bn = 0, bsr = pcm.sampleRate, vol = g.bgm;
     if (src && bg.background) {
       try {
         var d = await decodeBgm(ac, src);
         b = d.data; bn = d.n; bsr = d.sr;
-        vol = Math.max(0, Math.min(1, +bg.volume || 0));
       } catch (e) { b = null; }
     }
     var ch = pcm.getChannelData(0), n = ch.length, sr = pcm.sampleRate;
-    var vg = Math.max(0, +(st.voice && st.voice.volume) || 0);
-    var mg = Math.pow(10, (+mx.master_db || 0) / 20);
+    var vg = g.voice;
     for (var i = 0; i < n; i++) {
       var bi = b ? Math.floor(i * bsr / sr) % bn : 0;
-      var x = (ch[i] * vg + (b ? (b[bi] || 0) * vol : 0)) * mg;
+      var x = ch[i] * vg + (b ? (b[bi] || 0) * vol : 0);
       ch[i] = x > 1 ? 1 : (x < -1 ? -1 : x);
     }
   }
