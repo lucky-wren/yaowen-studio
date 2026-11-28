@@ -730,10 +730,10 @@ body.doc-mini #docMini{display:block}
        <label class="tfield"><span>影色</span><input type="color" id="cvArtEmbossColor" value="#0a1420"></label>
       </div></details></div>
 
-    <div class="tgroup"><h3>封面 · 日期行 <small>与标题独立；默认 36px / 常规 400 / 正文色 #3A4552</small></h3>
+    <div class="tgroup"><h3>封面 · 日期行 <small>与标题独立；默认 45px / 常规 400 / 正文色 #3A4552（与封面条目同字号）</small></h3>
      <div class="tgrid">
       <label class="tfield"><span>字体</span><select id="cvDateFont" data-font-brand></select></label>
-      <label class="tfield"><span>字号</span><input type="number" id="cvDateSize" min="16" max="120" step="1" value="36"><i class="u">px</i></label>
+      <label class="tfield"><span>字号</span><input type="number" id="cvDateSize" min="16" max="120" step="1" value="45"><i class="u">px</i></label>
       <label class="tfield"><span>字间距</span><input type="number" id="cvDateSpace" min="0" max="24" step="0.5" value="0"><i class="u">px / 字</i></label>
       <label class="tfield"><span>行间距</span><input type="number" id="cvDateLine" min="0.9" max="2.4" step="0.05" value="1.15"><i class="u">倍</i></label>
       <label class="tfield"><span>粗细</span><select id="cvDateWeight" data-weight></select></label>
@@ -741,10 +741,10 @@ body.doc-mini #docMini{display:block}
       <label class="tfield"><span>取色</span><label class="opt"><input type="checkbox" id="cvDateAutoColor"> 随主题</label></label>
      </div></div>
 
-    <div class="tgroup"><h3>封面 · 条目文字 <small>默认 文泉驿微米黑 · 47px / 字距 3 / 行距 1.2 / 常规 400 / 色 #606C7B；改动字号后按设定值绘制、10 条全文自动换行，画布尺寸恒定 9:16，页脚随内容往下移动让位</small></h3>
+    <div class="tgroup"><h3>封面 · 条目文字 <small>默认 文泉驿微米黑 · 45px / 字距 3 / 行距 1.2 / 常规 400 / 色 #3A4552（RGB 58 69 82）；改动字号后按设定值绘制、10 条全文自动换行，画布尺寸恒定 9:16，页脚随内容往下移动让位</small></h3>
      <div class="tgrid">
       <label class="tfield"><span>字体</span><select id="cvItemFont" data-font></select></label>
-      <label class="tfield"><span>字号</span><input type="number" id="cvItemFs" min="12" max="90" step="1" value="47"><i class="u">px</i></label>
+      <label class="tfield"><span>字号</span><input type="number" id="cvItemFs" min="12" max="90" step="1" value="45"><i class="u">px</i></label>
       <label class="tfield"><span>字间距</span><input type="number" id="cvItemSpace" min="0" max="12" step="0.5" value="3"><i class="u">px / 字</i></label>
        <label class="tfield"><span>行间距</span><input type="number" id="cvItemLine" min="0.9" max="2.4" step="0.05" value="1.2"><i class="u">倍</i></label>
        <label class="tfield"><span>粗细</span><select id="cvItemWeight" data-weight></select></label>
@@ -752,7 +752,7 @@ body.doc-mini #docMini{display:block}
       </div>
      <div class="tcheck"><label class="opt"><input type="checkbox" id="cvItemBold"> 加粗（默认不加粗）</label>
        <label class="opt"><input type="checkbox" id="cvItemAutoColor"> 颜色随主题</label>
-       <label class="opt"><span>自定义颜色</span><input type="color" id="cvItemColor" value="#606c7b"></label></div></div>
+       <label class="opt"><span>自定义颜色</span><input type="color" id="cvItemColor" value="#3a4552"></label></div></div>
 
      <div class="tgroup"><h3>封面 · 条目数字颜色 <small>文字内数字 / 编号数字 / 编号底色，三处独立</small></h3>
       <div class="tgrid">
@@ -767,10 +767,10 @@ body.doc-mini #docMini{display:block}
       <p class="tnote">v25：<b>只强调数值片段</b>。<code>7.2级</code>、<code>5.28%</code>、<code>800元/克</code>、<code>18个月</code>、<code>70万根</code> 这类数据照样红；<code>H3N2</code>、<code>H1N1</code>、<code>A380</code>、<code>5G</code> 这类型号 / 代号里与字母紧邻的数字<b>不染色</b>。想回到「所有阿拉伯数字都红」就勾上面的开关。<br>v23：D 方案默认文字内数字 <code>#D94A3D</code>、编号数字 <code>#1B2733</code>、编号底 <code>#E3DCCE</code>；<b>切到深色主题时条目文字、序号底、序号数字、数字强调会自动换成该主题的浅色，保证看得清</b>。手动改过的颜色固定为你设的值，不会被主题覆盖。关掉「统一底色」回各模板原配色，关掉「自定义数字色」沿用编号原色。</p>
        <p class="tnote" id="inkEcho" style="display:block;white-space:normal;line-height:1.6;word-break:break-word"></p></div>
 
-    <div class="tgroup"><h3>卡片 · 标题 <small>默认 65px / 字距 0.5 / 行距 1.22</small></h3>
+    <div class="tgroup"><h3>卡片 · 标题 <small>默认 68px / 字距 0.5 / 行距 1.22</small></h3>
      <div class="tgrid">
       <label class="tfield"><span>字体</span><select id="cdTitleFont" data-font></select></label>
-      <label class="tfield"><span>字号</span><input type="number" id="cdTitleSize" min="20" max="120" step="1" value="65"><i class="u">px</i></label>
+      <label class="tfield"><span>字号</span><input type="number" id="cdTitleSize" min="20" max="120" step="1" value="68"><i class="u">px</i></label>
       <label class="tfield"><span>字间距</span><input type="number" id="cdTitleSpace" min="0" max="12" step="0.5" value="0.5"><i class="u">px / 字</i></label>
        <label class="tfield"><span>行间距</span><input type="number" id="cdTitleLine" min="0.9" max="2.4" step="0.05" value="1.22"><i class="u">倍</i></label>
        <label class="tfield"><span>粗细</span><select id="cdTitleWeight" data-weight></select></label>
@@ -778,10 +778,10 @@ body.doc-mini #docMini{display:block}
        <label class="tfield"><span>取色</span><label class="opt"><input type="checkbox" id="cdTitleAutoColor" checked> 随主题</label></label>
       </div></div>
 
-    <div class="tgroup"><h3>卡片 · 正文 <small>默认 站酷庆科黄油体 · 50px / 字距 1 / 行距 1.5 · 默认开启底色 #476BD7</small></h3>
+    <div class="tgroup"><h3>卡片 · 正文 <small>默认 站酷庆科黄油体 · 48px / 字距 1 / 行距 1.5 · 默认开启底色 #476BD7 · 可一键显示/关闭正文</small></h3>
      <div class="tgrid">
       <label class="tfield"><span>字体</span><select id="cdBodyFont" data-font></select></label>
-      <label class="tfield"><span>字号</span><input type="number" id="cdBodySize" min="20" max="120" step="1" value="45"><i class="u">px</i></label>
+      <label class="tfield"><span>字号</span><input type="number" id="cdBodySize" min="20" max="120" step="1" value="48"><i class="u">px</i></label>
       <label class="tfield"><span>字间距</span><input type="number" id="cdBodySpace" min="0" max="12" step="0.5" value="1"><i class="u">px / 字</i></label>
        <label class="tfield"><span>行间距</span><input type="number" id="cdBodyLine" min="0.9" max="2.4" step="0.05" value="1.5"><i class="u">倍</i></label>
        <label class="tfield"><span>粗细</span><select id="cdBodyWeight" data-weight></select></label>
@@ -791,6 +791,7 @@ body.doc-mini #docMini{display:block}
       <label class="tfield"><span>不透明度</span><input type="number" id="cdBodyBgAlpha" min="0" max="100" step="1" value="18"><i class="u">%</i></label>
       <label class="tfield"><span>内边距</span><input type="number" id="cdBodyBgPad" min="0" max="60" step="1" value="14"><i class="u">px</i></label>
       <label class="tfield"><span>启用</span><label class="opt"><input type="checkbox" id="cdBodyBgOn" checked> 给正文块加底色</label></label>
+      <label class="tfield"><span>显示</span><label class="opt"><input type="checkbox" id="cdBodyShow" checked> 显示正文（关闭后只留标题与来源）</label></label>
      </div></div>
 
     <div class="tgroup"><h3>卡片 · 来源行 <small>字号 / 字距 / 行距 / 颜色独立可调</small></h3>
@@ -876,7 +877,7 @@ body.doc-mini #docMini{display:block}
     <li><b>08 导出</b>：一个下拉 + 一个主按钮。格式见下一节。</li>
     <li><b>默认设计（v22 · 按《封面设计稿》D 方案）</b>：9:16 封面按 540×960 设计稿等比 ×2 精确重绘。底色 <code>#F2EEE5</code>、主形/标题 <code>#1B2733</code>、正文 <code>#3A4552</code>、最弱一级（页脚等）<code>#7C7163</code>、细分隔线 <code>#C9C2B4</code>、序号底 <code>#E3DCCE</code>、序号数字 <code>#1B2733</code>；<b>整屏只留 <code>#D94A3D</code> 一个强调色</b>，只给数字、跌幅、头条，结论词回归正文色。主标题 120px / 中等 500 / 字距 1 / 行距 1.25 / 纯色 #0E1724，日期 36px / 常规 400，日期下方细线已上移贴近日期行（v30），第一条上方的小节带已整条去掉、不再有红竖条与文字，第一条改为跟随报头横线（间距固定 62px），调主标题字号时自动联动、不会再空出一大截，10 条编号列表按槽位自适应收缩（09 区可看「设定 → 实际」（含报头主标题字号，调大时标题、日期、报头横线整块跟着排）），页脚居中只写「本期有 N 条资讯」、上方无横线，底部不再放色卡。<b>A 墨蓝朱砂 / B 夜航蓝珊瑚 / C 炭黑橄榄 / D 报纸米白</b> 四套设计稿配色在 03 区主题里可直接切换；<b>切到深色主题时条目文字、序号底色、序号数字、数字强调会自动换成该主题的浅色，保证看得清</b>，09 区底部有「当前主题实际用色」回显，手动改过的颜色固定不被覆盖；默认模板仍是<b>等权列表</b>，语义编排等另四套可选。<b>卡片顶部同款标题与封面完全一致</b>，卡片正文默认开底色 <code>#476BD7</code>；条目文字内数字、编号数字、编号底色三项在 09 区独立设置，卡片标题数字不单独着色。</li>
     <li><b>封面条目字号（v29）</b>：09 区「封面 · 条目文字」的<b>字号</b>改动后按设定值真正绘制，<b>10 条照常自动换行</b>，不收单行、不加省略号，<b>画布尺寸恒定 1080×1920，绝不拉成长图</b>。内容变多时先自动压紧条目间距，仍放不下就把底部「本期有 N 条资讯」<b>跟着内容末尾往下移动让位</b>，上方回显会写明页脚下移到哪里、以及是否超出 9:16 底边。字号特别大（如 70px）时 10 条全文折行在单页物理上装不下，页脚会被推出画面，此时可勾<b>「确保页脚可见（自动缩字号）」</b>——字号自动收敛到放得下的最大值，页脚回到画面内。出厂默认 47px 的画面与 9:16 比例都不变；视频成片不用封面画布，不受影响。</li>
-    <li><b>默认排版（v28）</b>：封面条目文字默认 <b>站酷庆科黄油体 / 47px / 字距 3 / 行距 1.2 / 常规 400 / 颜色 #606C7B</b>；卡片正文默认 <b>站酷庆科黄油体 / 50px / 字距 1 / 行距 1.5 / 底色 #476BD7</b>。两处字体都随包内置，下拉里可随时改回文泉驿微米黑或其它字体，改动只影响对应区域。</li>
+    <li><b>默认排版（v28）</b>：封面条目文字默认 <b>站酷庆科黄油体 / 45px / 字距 3 / 行距 1.2 / 常规 400 / 颜色 #3A4552（58 69 82）</b>；卡片标题 68px、卡片正文默认 <b>站酷庆科黄油体 / 48px / 字距 1 / 行距 1.5 / 底色 #476BD7</b>。两处字体都随包内置，下拉里可随时改回文泉驿微米黑或其它字体，改动只影响对应区域。</li>
     <li><b>字幕字体（v28）</b>：07 区「字幕」新增 <b>字体</b> 下拉，列出全部内置/扩展字体与本机上传字体；选择后页面预览、烧录进画面的字幕、ASS 字幕的 Fontname、以及导出的字幕配置/render_manifest 全部同源。SRT 是纯文本、不携带字体，由播放器自行决定。</li>
     <li><b>数字强调范围（v25）</b>：封面条目里只有<b>数值片段</b>用强调色，<code>7.2级</code> / <code>5.28%</code> / <code>800元/克</code> / <code>18个月</code> / <code>70万根</code> 照常红；<code>H3N2</code> / <code>A380</code> / <code>5G</code> 这类型号、代号里与字母紧邻的数字<b>不染色</b>。09 区「封面 · 条目数字颜色」里的<b>「型号内数字也强调」</b>默认关，勾上才回到「所有阿拉伯数字都红」。9:16 设计稿版与其余模板用的是同一套判定。</li>
     <li><b>09 文字排版</b>：封面报头主标题（今日要闻速览）、日期行、封面条目、卡片标题 / 正文 / 来源各自独立；主标题另有<b>艺术字</b>（描边、发光、渐变、斜切、浮雕）。<b>改了封面主标题的颜色 / 字体 / 字号 / 字距 / 粗细 / 艺术字，卡片顶部「今日要闻速览」会同步跟着变</b>；卡片报头整体与封面同版式（朱砂细条 / 红短线 + DAILY BRIEF / 主标题独占一行 / 日期独占一行 / 期号胶囊 / 报头细线），字号按卡片画幅等比缩放，深色卡片主题下自动转浅色。标题的<b>文字内容</b>在 03 区「报头」里改，09 区只管样式。字体库（11 个内置 woff2 + 系统字体栈 + 扩展字体链接 + 上传 .ttf/.otf/.woff2）、封面条目与卡片标题 / 正文 / 来源的字体 / 字号 / 字间距 / 行间距 / <b>粗细 100–900</b> / 颜色 / 正文背景色；<b>字体安装助手</b>见第四节。字号数字就是 1080×1920 基准下的真实 px，没有「0 = 自动」。</li>
@@ -1041,7 +1042,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const THEMES={
  focus_paper:{n:'报纸米白 D（锁定）',bg:'#F2EEE5',txt:'#1B2733',sub:'#7C7163',body:'#3A4552',muted:'#7C7163',
   line:'rgba(27,39,51,.16)',lineSolid:'#C9C2B4',card:'rgba(27,39,51,.035)',acc:'#D94A3D',
-   numBg:'#E3DCCE',numFg:'#1B2733',ink:{item:'#606C7B',badgeBg:'#E3DCCE',badgeFg:'#1B2733',digit:'#D94A3D'},dark:false}, ink_crimson:{n:'墨蓝朱砂 A',bg:'#101E2E',txt:'#F0ECE3',sub:'#8293A6',body:'#C7D0DA',muted:'#8293A6',
+   numBg:'#E3DCCE',numFg:'#1B2733',ink:{item:'#3A4552',badgeBg:'#E3DCCE',badgeFg:'#1B2733',digit:'#D94A3D'},dark:false}, ink_crimson:{n:'墨蓝朱砂 A',bg:'#101E2E',txt:'#F0ECE3',sub:'#8293A6',body:'#C7D0DA',muted:'#8293A6',
   line:'rgba(199,208,218,.12)',lineSolid:'#2A3A4D',card:'rgba(255,255,255,.04)',acc:'#D94A3D',
   numBg:'#22303F',numFg:'#C7D0DA',ink:{item:'#C7D0DA',badgeBg:'#2A3A4D',badgeFg:'#E3EFFA',digit:'#FF7A61'},dark:true},
  night_coral:{n:'夜航蓝珊瑚 B',bg:'#0A1A2B',txt:'#E3EFFA',sub:'#7E9AB2',body:'#B9CFE0',muted:'#7E9AB2',
@@ -1437,7 +1438,7 @@ const COVER_TEXT_DEF={
    glowOn:false,glowColor:'#D94A3D',glowBlur:18,glowX:0,glowY:0,
    gradOn:false,gradFrom:'#099EFB',gradTo:'#14B845',gradDir:'h',
    skew:0,emboss:false,embossColor:'#0a1420'}},
- date:{font:'',size:36,spacing:0,line:1.15,weight:400,color:'#3A4552',autoColor:false}};
+ date:{font:'',size:45,spacing:0,line:1.15,weight:400,color:'#3A4552',autoColor:false}};
 function numClamp(v,a,b,d){const n=+v;return isFinite(n)?Math.max(a,Math.min(b,n)):d}
 function coverTextCfg(){
  const d=COVER_TEXT_DEF,c=(S.cover&&S.cover.text)||{};
@@ -1472,7 +1473,7 @@ function coverTextCfg(){
    brand.custom=!!(brand.font||brand.size!==120||brand.spacing!==1||brand.line!==1.25||brand.weight!==500||
     String(brand.color).toUpperCase()!=='#0E1724'||!brand.autoColor||
     brand.art.strokeOn||brand.art.glowOn||brand.art.gradOn||brand.art.emboss||brand.art.skew);
-  date.custom=!!(date.font||date.size!==36||date.spacing||date.line!==1.15||date.weight!==400||
+  date.custom=!!(date.font||date.size!==d.date.size||date.spacing||date.line!==1.15||date.weight!==400||
     String(date.color).toUpperCase()!=='#3A4552'||!date.autoColor);
   return {brand:brand,date:date,num_ink:numInkCfg()};
 }
@@ -1537,8 +1538,9 @@ function drawArtText(ctx,text,x,y,o){
 }
 
 const CARD_TEXT_DEF={
- title:{font:'wqy',size:65,spacing:0.5,line:1.22,weight:800,color:'',auto_color:true},
-  body:{font:'zc_hy',size:45,spacing:1,line:1.5,weight:400,color:'',auto_color:true,bg:{on:true,color:'#476BD7',alpha:18,pad:14}},
+ title:{font:'wqy',size:68,spacing:0.5,line:1.22,weight:800,color:'',auto_color:true},
+  /* v40：正文默认 48px；show 为「显示/关闭」开关，默认显示 */
+  body:{font:'zc_hy',size:48,spacing:1,line:1.5,weight:400,color:'',auto_color:true,show:true,bg:{on:true,color:'#476BD7',alpha:18,pad:14}},
  src:{font:'wqy',size:34,spacing:0,line:1.15,weight:400,color:'',auto_color:true}};
 const WEIGHTS=[['100','极细 100'],['300','细 300'],['400','常规 400'],['500','中等 500'],['600','半粗 600'],['700','加粗 700'],['800','特粗 800'],['900','超粗 900']];
 function fillBrandFontSelects(){
@@ -1571,6 +1573,8 @@ function cardTextCfg(){
  const raw=((src.body||{}).bg)||d.body.bg;
  /* v18：卡片正文文字颜色，默认随主题 → 默认画面逐字节不变 */
  b.color=String((src.body||{}).color||'');b.auto_color=(src.body||{}).auto_color!==false;
+  /* v40：正文显示/关闭，字段缺失按「显示」处理（导入旧配置不静默隐藏） */
+  b.show=(src.body||{}).show!==false;
  b.bg={on:!!raw.on,color:raw.color||d.body.bg.color,
   alpha:Math.max(0,Math.min(100,+raw.alpha||0)),pad:Math.max(0,Math.min(60,+raw.pad||0))};
   /* v18：卡片标题新增颜色设置，默认随主题（auto_color）→ 默认画面逐字节不变 */
@@ -1608,7 +1612,7 @@ const TYPE_IDS=['cvBrandFont','cvBrandSize','cvBrandSpace','cvBrandLine','cvBran
  'cvDateFont','cvDateSize','cvDateSpace','cvDateLine','cvDateWeight','cvDateColor','cvDateAutoColor',
  'cvItemFont','cvItemFs','cvItemSpace','cvItemLine','cvItemWeight','cvItemColor','cvItemAutoColor','cvItemBold','cvItemFsKeepAll',
  'cdTitleFont','cdTitleSize','cdTitleSpace','cdTitleLine','cdTitleWeight',
- 'cdBodyFont','cdBodySize','cdBodySpace','cdBodyLine','cdBodyWeight','cdBodyColor','cdBodyAutoColor','cdBodyBgOn','cdBodyBgColor','cdBodyBgAlpha','cdBodyBgPad',
+ 'cdBodyFont','cdBodySize','cdBodyShow','cdBodySpace','cdBodyLine','cdBodyWeight','cdBodyColor','cdBodyAutoColor','cdBodyBgOn','cdBodyBgColor','cdBodyBgAlpha','cdBodyBgPad',
   'cdSrcFont','cdSrcSize','cdSrcSpace','cdSrcLine','cdSrcWeight','cdSrcColor','cdSrcAutoColor',
   'numInkColor','numCoverDigits','numBadgeDigitColor','numBadgeDigitOn','numBadgeBgColor','numBadgeBgOn','numModelDigits','cdTitleColor','cdTitleAutoColor'];
 function syncTypeUI(force){
@@ -1625,7 +1629,7 @@ function syncTypeUI(force){
     q('cdTitleColor',t.title.color||'#f4f8fd');q('cdTitleAutoColor',t.title.auto_color);
    q('cdBodyFont',t.body.font);q('cdBodySize',t.body.size);q('cdBodySpace',t.body.spacing);q('cdBodyLine',t.body.line);q('cdBodyWeight',t.body.weight);
    q('cdBodyColor',t.body.color||'#e6eef8');q('cdBodyAutoColor',t.body.auto_color);
-  q('cdBodyBgOn',t.body.bg.on);q('cdBodyBgColor',t.body.bg.color);q('cdBodyBgAlpha',t.body.bg.alpha);q('cdBodyBgPad',t.body.bg.pad);
+  q('cdBodyShow',t.body.show!==false);q('cdBodyBgOn',t.body.bg.on);q('cdBodyBgColor',t.body.bg.color);q('cdBodyBgAlpha',t.body.bg.alpha);q('cdBodyBgPad',t.body.bg.pad);
    q('cdSrcFont',t.src.font);q('cdSrcSize',t.src.size);q('cdSrcSpace',t.src.spacing);q('cdSrcLine',t.src.line);q('cdSrcWeight',t.src.weight);
    q('cdSrcColor',t.src.color||'#a9bdd4');q('cdSrcAutoColor',t.src.auto_color);
    const ct=coverTextCfg(),b=ct.brand,a=b.art,d=ct.date;
@@ -1668,13 +1672,13 @@ function syncTypeUI(force){
    (cd.full_wrap&&cd.fixed_ratio?'　<span style="color:#e8b96a">'+(cd.foot_visible?'页脚下移至 '+cd.foot_y+'px 让位，画布仍为 '+cd.canvas_w+'×'+cd.canvas_h:'内容超出 9:16 底部 '+cd.overflow_px+'px，页脚已下移至 '+cd.foot_y+'px；调小字号或勾「确保页脚可见」可让页脚回到画面内')+'</span>':'')+
    (cd.item_one_line?'　<span style="color:#e8b96a">'+cd.item_one_line+' 条标题已收单行</span>':'')+' / 字距 '+(cd.item_spacing!==undefined?cd.item_spacing:+S.cover.itemSpace||0)+' / 行距 '+(cd.item_line_effective!==undefined?cd.item_line_effective:(+S.cover.itemLine||1.2))+(cd.item_line_effective!==undefined&&Math.abs(cd.item_line_effective-(+S.cover.itemLine||1.2))>.01?'（按槽位收紧）':'')+' / '+(S.cover.itemBold?'加粗':'常规')+
   '<br>卡片标题 <b>'+(kd.title_fs||t.title.size)+'px</b> / 字距 '+t.title.spacing+' / 行距 '+t.title.line+
-  '　·　正文 <b>'+(kd.summary_fs||t.body.size)+'px</b> / 字距 '+t.body.spacing+' / 行距 '+t.body.line+(t.body.bg.on?' / 底色 '+t.body.bg.color:'')+
+  '　·　正文 <b>'+(kd.summary_fs||t.body.size)+'px</b> / 字距 '+t.body.spacing+' / 行距 '+t.body.line+(t.body.bg.on?' / 底色 '+t.body.bg.color:'')+(t.body.show!==false?' / 显示':' / 已关闭')+
   '<br>来源 <b>'+(kd.src_fs||t.src.size)+'px</b> / 字距 '+t.src.spacing+' / 行距 '+t.src.line+
   (kd.summary_fs&&Math.abs(kd.summary_fs-t.body.size)>0.5?'　<span style="color:#e8b96a">正文因内容较长已自动缩到 '+kd.summary_fs+'px</span>':'')+_bfLine;
 }
 function syncTypeFromUI(){
  const q=id=>$(id),num=(id,d)=>{const e=q(id);return e?(+e.value||d):d};
- S.cover.itemFont=validFont(q('cvItemFont').value);S.cover.itemFs=num('cvItemFs',32);
+ S.cover.itemFont=validFont(q('cvItemFont').value);S.cover.itemFs=num('cvItemFs',DEF.cover.itemFs);
  S.cover.itemSpace=Math.max(0,Math.min(12,num('cvItemSpace',0)));
  S.cover.itemLine=Math.max(.9,Math.min(2.4,num('cvItemLine',1.2)));
   S.cover.itemColor=q('cvItemColor').value;S.cover.itemAutoColor=q('cvItemAutoColor').checked;
@@ -1699,19 +1703,20 @@ function syncTypeFromUI(){
  _a.gradOn=q('cvArtGradOn').checked;_a.gradFrom=q('cvArtGradFrom').value;_a.gradTo=q('cvArtGradTo').value;
  _a.gradDir=q('cvArtGradDir').value;_a.skew=aq('Skew',0);_a.emboss=q('cvArtEmboss').checked;
  _a.embossColor=q('cvArtEmbossColor').value;
- _d.font=q('cvDateFont').value;_d.size=num('cvDateSize',53);_d.spacing=num('cvDateSpace',0);
+ _d.font=q('cvDateFont').value;_d.size=num('cvDateSize',COVER_TEXT_DEF.date.size);_d.spacing=num('cvDateSpace',0);
  _d.line=num('cvDateLine',1.15);_d.weight=Math.round(num('cvDateWeight',400)/100)*100;
  _d.color=q('cvDateColor').value;_d.autoColor=q('cvDateAutoColor').checked;
  S.cover.text=coverTextCfg();
  const t=S.card.text||{};t.title=t.title||{};t.body=t.body||{};t.src=t.src||{};
- t.title.font=validFont(q('cdTitleFont').value);t.title.size=num('cdTitleSize',65);
+ t.title.font=validFont(q('cdTitleFont').value);t.title.size=num('cdTitleSize',CARD_TEXT_DEF.title.size);
   t.title.spacing=num('cdTitleSpace',.5);t.title.line=num('cdTitleLine',1.22);t.title.weight=Math.max(100,Math.min(900,+num('cdTitleWeight',800)));
   t.title.color=q('cdTitleColor').value;t.title.auto_color=q('cdTitleAutoColor').checked;
- t.body.font=validFont(q('cdBodyFont').value);t.body.size=num('cdBodySize',45);
+ t.body.font=validFont(q('cdBodyFont').value);t.body.size=num('cdBodySize',CARD_TEXT_DEF.body.size);
  t.body.spacing=num('cdBodySpace',1);t.body.line=num('cdBodyLine',1.5);t.body.weight=Math.max(100,Math.min(900,+num('cdBodyWeight',400)));
  t.body.color=q('cdBodyColor').value;t.body.auto_color=q('cdBodyAutoColor').checked;
  t.body.bg={on:q('cdBodyBgOn').checked,color:q('cdBodyBgColor').value,
   alpha:num('cdBodyBgAlpha',18),pad:num('cdBodyBgPad',14)};
+ t.body.show=!!(q('cdBodyShow')&&q('cdBodyShow').checked);
  t.src.font=validFont(q('cdSrcFont').value);t.src.size=num('cdSrcSize',34);
  t.src.spacing=num('cdSrcSpace',0);t.src.line=num('cdSrcLine',1.15);t.src.weight=Math.max(100,Math.min(900,+num('cdSrcWeight',400)));
  t.src.color=q('cdSrcColor').value;t.src.auto_color=q('cdSrcAutoColor').checked;
@@ -1890,7 +1895,7 @@ const DEF={
  script:{opening:openingTemplate(ISSUE_AUTO),windowOn:true,windowText:P.window_statement,
          body:P.news.map(n=>n.title+'。'+String(n.summary).replace(/\n/g,'').replace(/\u3000/g,'')).join('\n\n'),closing:P.close,limit:0},
    cover:{theme:'focus_paper',tpl:'equal',size:'portrait',gap:'standard',count:10,sep:'lines',altBands:false,sepStrength:1,sepAccent:false,
-             focusLabel:false,itemFont:'wqy',itemFs:47,itemSpace:3,itemLine:1.2,itemColor:'#606C7B',itemAutoColor:false,itemBold:false,itemWeight:400,
+             focusLabel:false,itemFont:'wqy',itemFs:45,itemSpace:3,itemLine:1.2,itemColor:'#3A4552',itemAutoColor:false,itemBold:false,itemWeight:400,
              itemFsTouched:false,itemFsKeepAll:false,
           text:JSON.parse(JSON.stringify(COVER_TEXT_DEF)),
           gapPx:15,
@@ -2034,6 +2039,21 @@ try{
   S.mix.master_db=DEF.mix.master_db;
   S.__v38=true;
  }
+ }catch(e){}
+/* v40 一次性迁移：只把「仍是上一版出厂默认」的值迁到新默认，用户手动改过的一律保留。 */
+try{
+ if(!S.__v40){
+  const _u=x=>String(x||'').toUpperCase();
+  if(+S.cover.itemFs===47&&S.cover.itemFsTouched!==true)S.cover.itemFs=DEF.cover.itemFs;
+  if(_u(S.cover.itemColor)==='#606C7B')S.cover.itemColor=DEF.cover.itemColor;
+  const _dt=((S.cover||{}).text||{}).date||{};
+  if(+_dt.size===36)_dt.size=COVER_TEXT_DEF.date.size;
+  const _cd=(S.card||{}).text||{};
+  if(+((_cd.title||{}).size)===65)_cd.title.size=CARD_TEXT_DEF.title.size;
+  if(+((_cd.body||{}).size)===45)_cd.body.size=CARD_TEXT_DEF.body.size;
+  if(((_cd.body||{}).show)===undefined)_cd.body.show=true;
+  S.__v40=true;
+ }
 }catch(e){}
 /* 复位后的状态即时写回本地存储 */
 try{save()}catch(e){}
@@ -2131,13 +2151,10 @@ try{
   S.__v24=true;
  }
 }catch(e){}
-/* v29 一次性迁移：v28 起封面条目出厂色为 #606C7B，
-   把仍停在 v22 出厂值 #3A4552 的旧缓存同步过来；用户自己调过的颜色一律保留。 */
+/* v29 迁移已停用：v40 起封面条目出厂色改回 #3A4552（RGB 58/69/82）。
+   旧缓存里的 #606C7B 由 v40 迁移块统一同步，此处不再反向覆盖。 */
 try{
- if(!S.__v29){
-  if(String((S.cover||{}).itemColor||'').toUpperCase()==='#3A4552')S.cover.itemColor='#606C7B';
-  S.__v29=true;
- }
+ if(!S.__v29){S.__v29=true;}
 }catch(e){}
 /* v30 一次性迁移：「今日焦点 · 精选 N 条」小节带整条去掉。
    旧缓存里开着的（含 v21 迁移设过的）一律关掉，且不再提供开关。 */
@@ -2700,7 +2717,8 @@ function semStats(ctx,co,x0,x1,y0,h,stats,u){
 /* 标题与日期的视觉间距：日期牌中心距标题块底部 82u，分隔线在 126u；
 */
 /* 语义封面报头常量（旧卡片布局那套 CARD_* 共 23 个零引用，已整体移除） */
-const HEAD_DATE_GAP=82,HEAD_RULE_AT=126,HEAD_TITLE_AT=72,DATE_FS=53,ISSUE_FS=53,ISSUE_BH=82;
+/* v40：日期默认字号统一 45px（封面/卡片/横版同源）；16:9 日期与条目整体向上让位 48u */
+const HEAD_DATE_GAP=82,HEAD_RULE_AT=126,HEAD_TITLE_AT=72,DATE_FS=45,ISSUE_FS=53,ISSUE_BH=82,LAND_LIFT=48;
 function semHeader(ctx,co,x0,x1,y0,big,u,showT,showD,showI,title,dateCn,issueNo){
  let yy=y0;
  ctx.fillStyle=co.acc;ctx.fillRect(x0,yy+12*u,56*u,5*u);
@@ -2733,6 +2751,9 @@ function semHeader(ctx,co,x0,x1,y0,big,u,showT,showD,showI,title,dateCn,issueNo)
    yy+=fs*_bt.line;
   }
  }else yy+=20*u;
+ /* v40：16:9 日期与条目区整体向上让位；标题不动，日期/横线/条目同量上移，相对距离不变 */
+ const _landLift=(ctx.canvas.width>ctx.canvas.height)?LAND_LIFT*u:0;
+ window.__landLift=_landLift;yy-=_landLift;
  if(showD){
   const dt=String(dateCn).replace('，',' · '),_dt=coverTextCfg().date;
   if(!_dt.custom){
@@ -3286,7 +3307,7 @@ function drawCoverUnified(target){
     47 / 51 / 70 全被压到同一个 42px，用户改字号画面纹丝不动 —— 正是
     v26/v29 修过、v34 重写时又带回来的坑。现在用户一改字号就按设定值绘制，
     放不下靠页脚下移让位（画布恒定 9:16）；默认态仍走旧自适应，画面不变。 */
- const sizeMode=(S.cover.itemFsTouched===true||+cis.fs!==47)&&S.cover.itemFsKeepAll!==true;
+ const sizeMode=(S.cover.itemFsTouched===true||+cis.fs!==DEF.cover.itemFs)&&S.cover.itemFsKeepAll!==true;
  /* v36：9 种分隔模式真正生效（默认 lines 仍走原 2px 实线，逐字节不变） */
  const sepCfg=coverSepCfg(T,line,T.acc);
  /* v35：报头重点首条右上角要放「头条」胶囊，标题文字先给它让出宽度，
@@ -3402,7 +3423,7 @@ function drawSemanticMagazine(target){
  const foot='本期有 '+P.news.length+' 条资讯',footFs=Math.round(s(26));
  let footY=H-s(84);
  /* v36：杂志版同样接入保字号与 9 种分隔模式（v35 无条件把字号收敛到 41px）。 */
- const sizeMode=(S.cover.itemFsTouched===true||+cis.fs!==47)&&S.cover.itemFsKeepAll!==true;
+ const sizeMode=(S.cover.itemFsTouched===true||+cis.fs!==DEF.cover.itemFs)&&S.cover.itemFsKeepAll!==true;
  const sepCfg=coverSepCfg(T,line,acc);
  const ruleYs=[],TB=[];
  let y=hd.ruleY+s(56);
@@ -3594,7 +3615,7 @@ function drawNewsprintCover(ctx,T,W,H){
     否则报头一收紧、可用高度变大，默认自适应字号会跟着从 40 漂到 43+，
     等于改了个间距却把整屏文字大小换了。 */
  const avail=(H-122)-470-16;   /* 仅「确保页脚可见」旧自适应分支用于缩字号 */
- const sizeMode=(S.cover.itemFsTouched===true||+itemFsSet!==47)&&S.cover.itemFsKeepAll!==true;
+ const sizeMode=(S.cover.itemFsTouched===true||+itemFsSet!==DEF.cover.itemFs)&&S.cover.itemFsKeepAll!==true;
  const _g=window.__npGap||{mb:44,pb:28};
  /* v34：03 区「条目间距」数值 / 三档预设真正生效。
     出厂未改过间距时保持原来的 44→28 自适应基准，默认画面逐字节不变；
@@ -3699,7 +3720,7 @@ function drawFocusCover(target){
  let mb=(S.cover.gapPxTouched?Math.max(12,coverGapPx()):44),pb=28,idealEnd=0,sizeMode=false;
  if(sz.w===1080&&!land){
   const _ci=coverItemStyle(T,1,false);
-  sizeMode=(S.cover.itemFsTouched===true||+_ci.fs!==47)&&S.cover.itemFsKeepAll!==true;
+  sizeMode=(S.cover.itemFsTouched===true||+_ci.fs!==DEF.cover.itemFs)&&S.cover.itemFsKeepAll!==true;
   if(sizeMode){
    const _bt=coverTextCfg().brand,_hd=npHeadLayout(Math.max(20,Math.min(160,_bt.size)),_bt.line);
    const _its=(P.cover||[]).slice(0,coverCount());
@@ -3779,6 +3800,8 @@ function drawCover(target){
   ctx.fillStyle=T.acc;ctx.fillRect(pad,y+14*u,96*u,6*u);
   y+=52*u;
  }else y+=24*u;
+ /* v40：横版日期、期号与条目区整体向上让位（同量，保持相对距离） */
+ if(land)y-=LAND_LIFT*u;
  const dBox=T.dark?mixHex(T.bg,'#ffffff',.16):T.txt;
   const bRed=T.acc;
   if(showD){
@@ -4099,7 +4122,7 @@ function drawCard(canvas,idx,forPlayer,reveal){
  ctx.beginPath();ctx.moveTo(M,line1);ctx.lineTo(R,line1);ctx.stroke();
  const indent=Math.round((land?76:84)*fsU);
  const tU=short?Math.min(fsU,1):fsU;
- const ct=cardTextCfg();
+ const ct=cardTextCfg();const bodyOn=ct.body.show!==false;
  const TL=ct.title.line>0?ct.title.line:1.22,BL=ct.body.line>0?ct.body.line:1.20,TS=ct.title.spacing,BS=ct.body.spacing;
  let titleFs=Math.round((+ct.title.size>0?+ct.title.size:(land?54:60))*tU),tlh=Math.round(titleFs*TL);
 /*
@@ -4173,7 +4196,7 @@ function drawCard(canvas,idx,forPlayer,reveal){
  tLines.forEach((o,i)=>{const k=Math.min(o[0].length,Math.max(0,leftT));leftT-=k;if(k>0)fillTextSpaced(ctx,o[0].slice(0,k),M+o[1],ty+i*tlh,TS);});
   const titleEnd=ty+tLines.length*tlh;
   /* 正文背景色：只盖正文文本块，不碰标题与来源；alpha 与内边距都在 09 区可设 */
-  const _bb=ct.body.bg||{},_bgOn=!!_bb.on;
+  const _bb=ct.body.bg||{},_bgOn=!!_bb.on&&bodyOn;
   if(_bgOn){
    const _pad=Math.round((+_bb.pad||12)*u),_bh=sLines.length*blh;
    const _rgb=hex2rgb(_bb.color||'#476BD7'),_a=Math.max(0,Math.min(100,+_bb.alpha||0))/100;
@@ -4186,7 +4209,7 @@ function drawCard(canvas,idx,forPlayer,reveal){
    ctx.fillStyle=ct.body.auto_color?sumColorHex(T):(ct.body.color||sumColorHex(T));
    ctx.font=(ct.body.weight||400)+' '+bodyFs+'px '+BFONT;
  let leftS=Math.ceil(body.length*rvS);
- sLines.forEach((o,i)=>{const k=Math.min(o[0].length,Math.max(0,leftS));leftS-=k;if(k>0)fillTextSpaced(ctx,o[0].slice(0,k),M+o[1],sy+i*blh,BS);});
+ if(bodyOn)sLines.forEach((o,i)=>{const k=Math.min(o[0].length,Math.max(0,leftS));leftS-=k;if(k>0)fillTextSpaced(ctx,o[0].slice(0,k),M+o[1],sy+i*blh,BS);});
  const sumEnd=sy+sLines.length*blh;
  /* v33：下横线从固定 1630 下移到「来源正上方 28u」。
     旧版把字幕安全区 subSafe 整块塞在横线与来源之间（portrait 实测 218px 空白），
@@ -4227,7 +4250,7 @@ function drawCard(canvas,idx,forPlayer,reveal){
   hdr_fs:hdrFs[1],no_fs:0,meta_lift:.62,title_fs:titleFs,
   src_anchored_bottom:false,src_follows_summary:short,content_driven_rule:short,
   src_bottom_pad:Math.round(H-srcEnd),subtitle_reserved:subSafe>0,subtitle_safe_h:subSafe,
-  reveal:+rv.toFixed(3),card_content_reveal:true,
+  reveal:+rv.toFixed(3),card_content_reveal:true,body_visible:bodyOn,
   title_shown:Math.min(title.length,Math.ceil(title.length*rvT)),title_total:title.length,
   body_shown:Math.min(body.length,Math.ceil(body.length*rvS)),body_total:body.length,
   subtitle_bg:S.subtitle.background_style||'black',subtitle_lines:subMaxLines(),
@@ -4312,7 +4335,7 @@ function gates(){
   ['字幕按片段替换、不累积前四行',typeof subChunks==='function'&&typeof subChunkAt==='function'&&SUB_CHUNK_MAX===30&&String(drawSubtitleCanvas).indexOf('字幕逐字累积')>=0],
   ['片尾帧含免责声明且无重复条数',!!window.__outroDraw&&window.__outroDraw.disclaimer===DISCLAIMER&&window.__outroDraw.item_count_shown===false&&window.__outroDraw.overlap===0],
   ['文字排版聚合为第 9 项',FLOW.length===10&&FLOW[8][0]==='sec-type'&&!!document.getElementById('sec-type')],
-  ['封面默认 47px / 字距 3 / 行距 1.2 / 不加粗',DEF.cover.itemFs===47&&DEF.cover.itemBold===false&&DEF.cover.itemSpace===3&&DEF.cover.itemLine===1.2&&DEF.cover.gap==='standard'&&!!$('cvItemSpace')&&!!$('cvItemLine')],
+  ['封面默认 45px / 字距 3 / 行距 1.2 / 不加粗',DEF.cover.itemFs===45&&DEF.cover.itemBold===false&&DEF.cover.itemSpace===3&&DEF.cover.itemLine===1.2&&DEF.cover.gap==='standard'&&!!$('cvItemSpace')&&!!$('cvItemLine')],
   ['v32 条目样式缺省口径统一引用 DEF，不再散落与出厂默认相反的旧值',
    String(itemStyleCfg).indexOf('DEF.cover.itemFs')>=0&&
    String(itemStyleCfg).indexOf('DEF.cover.itemColor')>=0&&
@@ -4326,7 +4349,7 @@ function gates(){
       blk.indexOf('=45')<0&&blk.indexOf('#3A4552')<0})()&&
    String(itemStyleCfg).indexOf('DEF.cover.itemFs')>=0&&
    DEF.cover.itemFsKeepAll===false],
-  ['卡片标题 65 / 0.5、正文 45 / 1 / 1.5 为默认',CARD_TEXT_DEF.title.size===65&&CARD_TEXT_DEF.title.spacing===.5&&CARD_TEXT_DEF.body.size===45&&CARD_TEXT_DEF.body.spacing===1&&CARD_TEXT_DEF.body.line===1.5],
+  ['卡片标题 68 / 0.5、正文 48 / 1 / 1.5 为默认',CARD_TEXT_DEF.title.size===68&&CARD_TEXT_DEF.title.spacing===.5&&CARD_TEXT_DEF.body.size===48&&CARD_TEXT_DEF.body.spacing===1&&CARD_TEXT_DEF.body.line===1.5],
   ['字号控件不再用 0=自动',+$('cdTitleSize').min>0&&+$('cdBodySize').min>0&&+$('cvItemFs').min>0&&+$('cdTitleSize').value>0&&+$('cdBodySize').value>0],
   ['卡片正文背景色与来源文字可设',!!$('cdBodyBgOn')&&!!$('cdBodyBgColor')&&!!$('cdSrcFont')&&!!$('cdSrcSize')&&!!cardTextCfg().body.bg&&!!cardTextCfg().src],
   ['封面字间距 / 行间距进入绘制',String(drawEqualCover).indexOf('fillTextSpaced')>=0&&String(drawCover).indexOf('fillTextSpaced')>=0&&!!window.__coverDraw&&typeof window.__coverDraw.item_spacing==='number'],
@@ -4387,14 +4410,14 @@ function gates(){
  ['配乐试听有 fetch 超时回退与可定位诊断',typeof bgmFailNote==='function'&&typeof window.__bgmDiag==='function'&&'AbortController' in window&&!!$('bgmAudio')],
  ['字体库 ≥ 30 款且支持上传',(FONT_LIB.length+FONT_EXT.length)>=30&&!!$('fontFile')&&typeof registerFont==='function'&&document.querySelectorAll('select[data-font]').length>=4],
   ['文字排版设置写进配置导出',typeof itemStyleCfg==='function'&&'spacing' in itemStyleCfg()&&'bg' in cardTextCfg().body&&'src' in cardTextCfg()],
-  ['封面默认 47 / 字距 3 / 行距 1.2 / 标准间距',DEF.cover.itemFs===47&&DEF.cover.itemSpace===3&&DEF.cover.itemLine===1.2&&DEF.cover.gap==='standard'&&DEF.cover.tpl==='equal'],
+  ['封面默认 45 / 字距 3 / 行距 1.2 / 标准间距',DEF.cover.itemFs===45&&DEF.cover.itemSpace===3&&DEF.cover.itemLine===1.2&&DEF.cover.gap==='standard'&&DEF.cover.tpl==='equal'],
   ['条目间距可填数值且五套模板同源',!!$('cvGapPx')&&typeof coverGapPx==='function'&&String(drawEqualCover).indexOf('coverGapPx()')>=0&&String(drawCover).indexOf('coverGapPx()')>=0],
   ['折行不再主动缩短上一行',String(wrapText).indexOf('out.length-2')<0&&String(wrapText).indexOf('OPEN.test')<0&&typeof textWidth==='function'],
   ['内置字体 ≥ 9 款，默认下拉无「未装」',FONT_LIB.filter(x=>x.b).length>=9&&![...($('cvItemFont')?$('cvItemFont').options:[])].some(o=>o.textContent.indexOf('未装')>=0)],
   /* v17 以下 5 条只检查「出厂默认常量」，不读运行时 S：用户改任何设置都不该让硬闸报红 */
  ['v17 条目间距默认 15 且三档预设同步',GAP_PRESET.standard===15&&DEF.cover.gapPx===15&&COVER_TEXT_DEF.brand.size===120],
  ['v17 条目分隔默认细线',DEF.cover.sep==='lines'&&DEF.cover.altBands===false&&!!CV_SEPS.lines],
- ['v28 封面条目文字默认 #606C7B（96/108/123）且不随主题',String(DEF.cover.itemColor).toUpperCase()==='#606C7B'&&DEF.cover.itemAutoColor===false],
+ ['v28 封面条目文字默认 #3A4552（58/69/82）且不随主题',String(DEF.cover.itemColor).toUpperCase()==='#3A4552'&&DEF.cover.itemAutoColor===false],
  ['v24 主标题 120px / 中等 500 / 纯色 #0E1724，艺术字与渐变默认关',COVER_TEXT_DEF.brand.autoColor===false&&COVER_TEXT_DEF.brand.color==='#0E1724'&&COVER_TEXT_DEF.brand.weight===500&&COVER_TEXT_DEF.brand.size===120&&COVER_TEXT_DEF.brand.art.on===false&&COVER_TEXT_DEF.brand.art.gradOn===false],
  ['v20 卡片正文默认开启底色 #476BD7',CARD_TEXT_DEF.body.bg.on===true&&CARD_TEXT_DEF.body.bg.color==='#476BD7'],
  /* v18：数字色只作用于封面条目文字；编号徽章与卡片标题数字还原 */
@@ -4410,7 +4433,7 @@ function gates(){
    THEMES.focus_paper.bg==='#F2EEE5'&&THEMES.focus_paper.txt==='#1B2733'&&THEMES.focus_paper.body==='#3A4552'&&
    THEMES.focus_paper.muted==='#7C7163'&&THEMES.focus_paper.lineSolid==='#C9C2B4'&&
    THEMES.focus_paper.numBg==='#E3DCCE'&&THEMES.focus_paper.acc==='#D94A3D'&&
-   DEF.cover.theme==='focus_paper'&&DEF.card.theme==='focus_paper'&&DEF.cover.itemColor==='#606C7B'],
+   DEF.cover.theme==='focus_paper'&&DEF.card.theme==='focus_paper'&&DEF.cover.itemColor==='#3A4552'],
   ['v22 设计稿 A/B/C 三套反白主题齐备',!!THEMES.ink_crimson&&!!THEMES.night_coral&&!!THEMES.charcoal_olive&&
    THEMES.ink_crimson.bg==='#101E2E'&&THEMES.night_coral.acc==='#FF7A61'&&THEMES.charcoal_olive.acc==='#C47A44'],
   ['v22 报纸版式按 540×960 设计稿 ×2 精确重绘',typeof drawNewsprintCover==='function'&&
@@ -4432,7 +4455,7 @@ function gates(){
   ['v23 配色跟随主题明暗，深色主题条目与序号自动转浅色',typeof coverInk==='function'&&
    typeof themeInk==='function'&&typeof updateInkEcho==='function'&&
    Object.keys(THEMES).every(k=>!!THEMES[k].ink)&&
-   THEMES.focus_paper.ink.item==='#606C7B'&&
+   THEMES.focus_paper.ink.item==='#3A4552'&&
    THEMES.ink_crimson.ink.item==='#C7D0DA'&&
    THEMES.ink_crimson.ink.badgeFg==='#E3EFFA'&&
    typeof headerInk==='function'&&
@@ -4451,8 +4474,8 @@ function gates(){
             m[at('5')]===true&&m[at('8')]===true&&m[at('1')]===true})()&&
    String(npDrawLine).indexOf('valueDigitMask(t)')>=0&&
    String(fillTextSpaced).indexOf('valueDigitMask(t)')>=0],
-  ['v38 默认配置：封面条目 wqy(文泉驿微米黑)/47/#606C7B，卡片正文 zc_hy，字幕字体可选',
-   DEF.cover.itemFont==='wqy'&&DEF.cover.itemFs===47&&String(DEF.cover.itemColor).toUpperCase()==='#606C7B'&&
+  ['v38 默认配置：封面条目 wqy(文泉驿微米黑)/45/#3A4552，卡片正文 zc_hy，字幕字体可选',
+   DEF.cover.itemFont==='wqy'&&DEF.cover.itemFs===45&&String(DEF.cover.itemColor).toUpperCase()==='#3A4552'&&
    CARD_TEXT_DEF.body.font==='zc_hy'&&+$('cvItemFs').min>0&&
    !!$('subFont')&&typeof subFontKey==='function'&&typeof subFontName==='function'&&
    String(subtitleCfg).indexOf('font_name:subFontName')>=0&&
@@ -4460,7 +4483,7 @@ function gates(){
    String(buildAss).indexOf('subFontName(C.font)')>=0&&
    subtitleCfg().font===subFontKey()&&
    String(drawFocusCover).indexOf('itemFsTouched')>=0],
-  ['v29 画布尺寸恒定 9:16 + 页脚随内容下移让位，默认 47 页脚仍在原位',
+  ['v29 画布尺寸恒定 9:16 + 页脚随内容下移让位，默认 45 页脚仍在原位',
    typeof npNeedHeight==='function'&&
    String(drawFocusCover).indexOf('npNeedHeight')>=0&&
    String(drawFocusCover).indexOf('const H=sz.h')>=0&&
@@ -4511,7 +4534,30 @@ function gates(){
   ['分平台预设 5 组 + 自定义（含 B站 / 小红书）',Object.keys(PUB_PLATFORMS).length===6&&!!PUB_PLATFORMS.douyin&&!!PUB_PLATFORMS.kuaishou&&!!PUB_PLATFORMS.wechat&&!!PUB_PLATFORMS.bilibili&&!!PUB_PLATFORMS.xiaohongshu&&PUB_PLATFORMS.bilibili.time==='19:30'&&PUB_PLATFORMS.xiaohongshu.time==='20:30'],
   ['早通勤精简稿真作用于口播分段',typeof commuteBody==='function'&&String(fullText).indexOf('commuteBody()')>=0],
   ['数据源时效校验存在且默认如实标注',typeof sourceFreshness==='function'&&sourceFreshness().stale===true&&S.publish.honest!==false&&String(S.script.windowText).indexOf('快照')>=0],
-  ['发布配置写进导出',typeof windowCfg==='function'&&'source_freshness' in windowCfg()&&'publish_cfg' in manifest()]
+  ['发布配置写进导出',typeof windowCfg==='function'&&'source_freshness' in windowCfg()&&'publish_cfg' in manifest()],
+  ['v40 默认：封面日期/条目 45px、条目色 #3A4552(58/69/82)，卡片标题 68 / 正文 48',
+   COVER_TEXT_DEF.date.size===45&&DATE_FS===45&&DEF.cover.itemFs===45&&
+   String(DEF.cover.itemColor).toUpperCase()==='#3A4552'&&
+   CARD_TEXT_DEF.title.size===68&&CARD_TEXT_DEF.body.size===48&&
+   +$('cvDateSize').value===45&&+$('cvItemFs').value===45&&
+   +$('cdTitleSize').value===68&&+$('cdBodySize').value===48&&
+   String($('cvItemColor').value).toUpperCase()==='#3A4552'],
+  ['v40 卡片正文显示/关闭开关在 09 区且真接入绘制',
+   !!$('cdBodyShow')&&$('cdBodyShow').checked===true&&cardTextCfg().body.show===true&&
+   String(drawCard).indexOf('const bodyOn=ct.body.show!==false')>=0&&
+   String(drawCard).indexOf('_bgOn=!!_bb.on&&bodyOn')>=0&&
+   String(drawCard).indexOf('if(bodyOn)sLines.forEach')>=0],
+  ['v40 16:9 日期与条目整体上移，卡片报头距离与字号不变',
+   typeof LAND_LIFT!=='undefined'&&LAND_LIFT>0&&
+   String(semHeader).indexOf('window.__landLift=_landLift')>=0&&
+   String(drawCover).indexOf('y-=LAND_LIFT*u')>=0&&
+   String(drawCard).indexOf('npHeadLayout(_brandEff,bt.line)')>=0&&
+   String(drawCover).indexOf('DATE_FS*u')>=0],
+  ['v40 片尾按真实画幅排版，不再非等比拉伸',
+   String(drawPlayer).indexOf('ctx.scale(PW/540')<0&&
+   String(drawPlayer).indexOf('const W=PW,HH=PH')>=0&&
+   String(drawPlayer).indexOf('no_stretch:true')>=0&&
+   !!window.__outroDraw&&window.__outroDraw.overlap===0]
  ];
  $('gates').innerHTML=tests.map(([n,ok])=>'<div class="gate '+(ok?'ok':'bad')+'"><b>'+(ok?'✓':'!')+'</b>'+esc(n)+'</div>').join('');
  return tests;
@@ -5044,47 +5090,58 @@ function drawPlayer(){
     window.__outroDraw={kind:'open',cover:true,boxes:[],overlap:0,title_lines:1,title_fs:0,
      disclaimer:DISCLAIMER,item_count_shown:false,window_once:true,disclaimer_read:false};
    }else{
-   const PW=$('plCanvas').width||540,PH=$('plCanvas').height||960;
-   ctx.save();ctx.scale(PW/540,PH/960);
-   const W=540,H=960,T=THEMES[S.card.theme];
-   ctx.fillStyle=T.bg;ctx.fillRect(0,0,W,H);
-   ctx.fillStyle=T.acc;ctx.fillRect(0,0,W,5);
+   const PW=$('plCanvas').width||1080,PH=$('plCanvas').height||1920;
+   ctx.save();
+   /* v40：片尾按真实画幅 W×HH 直接排版，不再把 540×960 用 ctx.scale 拉到 16:9。
+      旧版 16:9 下 x 放大 3.56 倍、y 只 1.125 倍，文字被横向拉扁、窗口框与免责声明错位。
+      9:16 下本式计算结果与旧版 ×2 完全一致；16:9 下文字不变形、各块比例一致。 */
+   const W=PW,HH=PH,T=THEMES[S.card.theme],ou=HH/960,pad=Math.round(W*40/540);
+   const FAM='"WenQuanYi Micro Hei",sans-serif',fs=v=>Math.max(10,Math.round(v*ou));
+   ctx.fillStyle=T.bg;ctx.fillRect(0,0,W,HH);
+   ctx.fillStyle=T.acc;ctx.fillRect(0,0,W,Math.max(4,Math.round(5*ou)));
    const isEnd=i===seg.length-1,isOpen=i===0;
    const label=isEnd?'感谢收听 · 下期见':(isOpen?(S.cover.showTitle?String(S.cover.title||'今日要闻速览'):S.issue.date_line):'资讯时间窗口');
-   const boxes=[];let y=86;
+   const boxes=[];
    ctx.textAlign='left';ctx.textBaseline='alphabetic';
-   ctx.fillStyle=T.sub;ctx.font='22px "WenQuanYi Micro Hei",sans-serif';
-   ctx.fillText('今日要闻速览 · '+S.issue.issue_no,40,y);boxes.push([40,y-22,300,y+4,'brand']);
-   y=300;
-/* */
-   let bigFs=56;ctx.font='900 '+bigFs+'px "WenQuanYi Micro Hei",sans-serif';
-   while(bigFs>36&&ctx.measureText(label).width>460){bigFs-=2;ctx.font='900 '+bigFs+'px "WenQuanYi Micro Hei",sans-serif';}
-   ctx.fillStyle=T.txt;ctx.fillText(label,40,y);boxes.push([40,y-bigFs,500,y+8,'title0']);
-   y+=Math.round(bigFs*1.28)+18;
-   ctx.fillStyle=T.acc;ctx.fillRect(40,y,110,6);boxes.push([40,y,150,y+6,'bar']);
-   y+=50;
-   ctx.fillStyle=T.sub;ctx.font='24px "WenQuanYi Micro Hei",sans-serif';
-   ctx.fillText(S.issue.date_line,40,y);boxes.push([40,y-24,360,y+4,'date']);y+=46;
-/* */
-   const boxY=y+40,boxH=112;
-   ctx.strokeStyle=T.line;ctx.lineWidth=1;rr(ctx,40,boxY,W-80,boxH,10);ctx.stroke();
-   ctx.fillStyle=T.sub;ctx.font='20px "WenQuanYi Micro Hei",sans-serif';
-   ctx.fillText('资讯窗口',62,boxY+40);
-   ctx.fillStyle=T.txt;ctx.font='bold 24px "WenQuanYi Micro Hei",sans-serif';
-   ctx.fillText(publishWindow().label,62,boxY+80);
-   boxes.push([62,boxY+20,62+240,boxY+92,'window_box']);
-   ctx.strokeStyle=T.line;ctx.beginPath();ctx.moveTo(40,H-142);ctx.lineTo(W-40,H-142);ctx.stroke();
-   ctx.fillStyle=T.sub;ctx.font='20px "WenQuanYi Micro Hei",sans-serif';
+   let y=Math.round(HH*86/960);
+   ctx.fillStyle=T.sub;ctx.font=fs(22)+'px '+FAM;
+   ctx.fillText('今日要闻速览 · '+S.issue.issue_no,pad,y);
+   boxes.push([pad,y-fs(22),pad+Math.round(W*300/540),y+4,'brand']);
+   y=Math.round(HH*300/960);
+   let bigFs=fs(56);ctx.font='900 '+bigFs+'px '+FAM;
+   while(bigFs>fs(36)&&ctx.measureText(label).width>W-2*pad){bigFs-=2;ctx.font='900 '+bigFs+'px '+FAM;}
+   ctx.fillStyle=T.txt;ctx.fillText(label,pad,y);
+   boxes.push([pad,y-bigFs,pad+Math.round(W*460/540),y+8,'title0']);
+   y+=Math.round(bigFs*1.28)+Math.round(18*ou);
+   ctx.fillStyle=T.acc;ctx.fillRect(pad,y,Math.round(110*ou),Math.max(3,Math.round(6*ou)));
+   boxes.push([pad,y,pad+Math.round(110*ou),y+Math.max(3,Math.round(6*ou)),'bar']);
+   y+=Math.round(50*ou);
+   ctx.fillStyle=T.sub;ctx.font=fs(24)+'px '+FAM;
+   ctx.fillText(S.issue.date_line,pad,y);
+   boxes.push([pad,y-fs(24),pad+Math.round(W*360/540),y+4,'date']);
+   y+=Math.round(46*ou);
+   const boxY=y+Math.round(40*ou),boxH=Math.round(112*ou);
+   ctx.strokeStyle=T.line;ctx.lineWidth=1;rr(ctx,pad,boxY,W-2*pad,boxH,Math.round(10*ou));ctx.stroke();
+   ctx.fillStyle=T.sub;ctx.font=fs(20)+'px '+FAM;
+   ctx.fillText('资讯窗口',pad+Math.round(22*ou),boxY+Math.round(40*ou));
+   ctx.fillStyle=T.txt;ctx.font='bold '+fs(24)+'px '+FAM;
+   ctx.fillText(publishWindow().label,pad+Math.round(22*ou),boxY+Math.round(80*ou));
+   boxes.push([pad+Math.round(22*ou),boxY+Math.round(20*ou),pad+Math.round(262*ou),boxY+Math.round(92*ou),'window_box']);
+   const ruleY=HH-Math.round(142*ou);
+   ctx.strokeStyle=T.line;ctx.beginPath();ctx.moveTo(pad,ruleY);ctx.lineTo(W-pad,ruleY);ctx.stroke();
+   ctx.fillStyle=T.sub;ctx.font=fs(20)+'px '+FAM;
    const d1='内容依据公开信息整理，具体以官方发布为准；',d2='仅供参考，不构成投资、医疗或法律建议。';
-   ctx.fillText(d1,40,H-104);ctx.fillText(d2,40,H-72);
-   boxes.push([40,H-124,40+ctx.measureText(d1).width,H-104,'disclaimer1']);
-   boxes.push([40,H-92,40+ctx.measureText(d2).width,H-72,'disclaimer2']);
+   const dy1=HH-Math.round(104*ou),dy2=HH-Math.round(72*ou);
+   ctx.fillText(d1,pad,dy1);ctx.fillText(d2,pad,dy2);
+   boxes.push([pad,dy1-fs(20),pad+ctx.measureText(d1).width,dy1,'disclaimer1']);
+   boxes.push([pad,dy2-fs(20),pad+ctx.measureText(d2).width,dy2,'disclaimer2']);
    let overlap=0;
    for(let a=0;a<boxes.length;a++)for(let b=a+1;b<boxes.length;b++){
     const A=boxes[a],B=boxes[b],ox=Math.min(A[2],B[2])-Math.max(A[0],B[0]),oy=Math.min(A[3],B[3])-Math.max(A[1],B[1]);
     if(ox>6&&oy>6)overlap++;}
    window.__outroDraw={kind:isEnd?'close':(isOpen?'open':'window'),boxes:boxes,overlap:overlap,
-    title_lines:1,title_fs:bigFs,disclaimer:DISCLAIMER,item_count_shown:false,window_once:true,window_box:true,disclaimer_read:false};
+    title_lines:1,title_fs:bigFs,disclaimer:DISCLAIMER,item_count_shown:false,window_once:true,
+    window_box:true,disclaimer_read:false,responsive:true,no_stretch:true,ou:ou};
    ctx.restore();
    }
  }else drawCard($('plCanvas'),cardIdx,true,rv);
