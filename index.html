@@ -741,7 +741,7 @@ body.doc-mini #docMini{display:block}
       <label class="tfield"><span>取色</span><label class="opt"><input type="checkbox" id="cvDateAutoColor"> 随主题</label></label>
      </div></div>
 
-    <div class="tgroup"><h3>封面 · 条目文字 <small>默认 文泉驿微米黑 · 45px / 字距 3 / 行距 1.2 / 常规 400 / 色 #3A4552（RGB 58 69 82）；改动字号后按设定值绘制、10 条全文自动换行，画布尺寸恒定 9:16，页脚随内容往下移动让位</small></h3>
+    <div class="tgroup"><h3>封面 · 条目文字 <small>默认 文泉驿微米黑 · 45px / 字距 3 / 行距 1.2 / 常规 400 / 色 #3A4552（RGB 58 69 82）；6:7 / 3:4 画幅默认 52px、条目间距 26；改动字号后按设定值绘制、10 条全文自动换行，画布尺寸恒定，页脚随内容往下移动让位</small></h3>
      <div class="tgrid">
       <label class="tfield"><span>字体</span><select id="cvItemFont" data-font></select></label>
       <label class="tfield"><span>字号</span><input type="number" id="cvItemFs" min="12" max="90" step="1" value="45"><i class="u">px</i></label>
@@ -794,7 +794,7 @@ body.doc-mini #docMini{display:block}
       <label class="tfield"><span>显示</span><label class="opt"><input type="checkbox" id="cdBodyShow" checked> 显示正文（关闭后只留标题与来源）</label></label>
      </div></div>
 
-    <div class="tgroup"><h3>卡片 · 来源行 <small>字号 / 字距 / 行距 / 颜色独立可调</small></h3>
+    <div class="tgroup"><h3>卡片 · 来源行 <small>字号 / 字距 / 行距 / 颜色独立可调；6:7 / 3:4 画幅默认 28px</small></h3>
      <div class="tgrid">
       <label class="tfield"><span>字体</span><select id="cdSrcFont" data-font></select></label>
       <label class="tfield"><span>字号</span><input type="number" id="cdSrcSize" min="16" max="80" step="1" value="34"><i class="u">px</i></label>
@@ -1674,7 +1674,9 @@ function syncTypeUI(force){
   '<br>卡片标题 <b>'+(kd.title_fs||t.title.size)+'px</b> / 字距 '+t.title.spacing+' / 行距 '+t.title.line+
   '　·　正文 <b>'+(kd.summary_fs||t.body.size)+'px</b> / 字距 '+t.body.spacing+' / 行距 '+t.body.line+(t.body.bg.on?' / 底色 '+t.body.bg.color:'')+(t.body.show!==false?' / 显示':' / 已关闭')+
   '<br>来源 <b>'+(kd.src_fs||t.src.size)+'px</b> / 字距 '+t.src.spacing+' / 行距 '+t.src.line+
-  (kd.summary_fs&&Math.abs(kd.summary_fs-t.body.size)>0.5?'　<span style="color:#e8b96a">正文因内容较长已自动缩到 '+kd.summary_fs+'px</span>':'')+_bfLine;
+  (kd.summary_fs&&Math.abs(kd.summary_fs-t.body.size)>0.5?'　<span style="color:#e8b96a">正文因内容较长已自动缩到 '+kd.summary_fs+'px</span>':'')+_bfLine+
+  '<br>当前画幅 <b>'+SIZES[S.shared.size].n+'</b> 出厂默认 · 条目 '+sizeDefaults(S.shared.size).itemFs+
+  'px / 间距 '+sizeDefaults(S.shared.size).gapPx+'px / 来源 '+sizeDefaults(S.shared.size).srcFs+'px';
 }
 function syncTypeFromUI(){
  const q=id=>$(id),num=(id,d)=>{const e=q(id);return e?(+e.value||d):d};
@@ -1751,6 +1753,8 @@ function subChunkAt(text,ratio){
  return {chunks:cs,idx:idx,text:cs[idx],inner:inner,count:cs.length};
 }
 const CD_TPLS={frame_card:'标准卡',frame_minimal:'极简列表',frame_headline:'报头重点'};
+/* v41：16:9 片尾文字放大系数（9:16 是 ou=2，横版抬到 1.8，视觉接近但不出画） */
+const OUTRO_LAND_TEXT_U=1.8;
 const SIZES={portrait:{n:'抖音/快手 · 9:16',w:1080,h:1920},landscape:{n:'B站 · 16:9',w:1920,h:1080},
   xhs:{n:'小红书 · 3:4',w:1080,h:1440},wechat:{n:'视频号 · 6:7',w:1080,h:1260},square:{n:'方形 · 1:1',w:1080,h:1080}};
 function isLand(k){const s=SIZES[k]||SIZES.portrait;return s.w>s.h}
@@ -2179,7 +2183,50 @@ function syncShared(){
  S.cover.size=S.card.size=S.export_size=S.shared.size;
 }
 syncShared();
-function setShared(k,v){S.shared[k]=v;syncShared();stageRatio(S.shared.size);save();render();}
+/* v41：按画幅的出厂默认档位。
+   6:7（视频号）/ 3:4（小红书）三条：封面条目间距 26、条目字号 52、卡片来源字号 28；
+   其余画幅沿用 15 / 45 / 34。只在「当前值仍等于当前画幅出厂默认，且用户没手动动过」时切档，
+   用户自己改过的数值跨画幅一律保留，不静默覆盖。 */
+const SIZE_DEFAULTS={
+ portrait:{gapPx:15,itemFs:45,srcFs:34},landscape:{gapPx:15,itemFs:45,srcFs:34},
+ square:{gapPx:15,itemFs:45,srcFs:34},
+ xhs:{gapPx:26,itemFs:52,srcFs:28},wechat:{gapPx:26,itemFs:52,srcFs:28}};
+function sizeDefaults(k){return SIZE_DEFAULTS[k]||SIZE_DEFAULTS.portrait}
+/* v42：档位按 UI 唯一口径 shared.size 判定；异步配置只改 cover.size，不应让档位错档 */
+function sizeItemFs(){return sizeDefaults(S.shared.size||S.cover.size).itemFs}
+/* v42：26 不属于三档预设，返回 'custom'（数值框显示 26、绘制按 26 生效，chips 不高亮预设档） */
+function gapKeyOf(v){return v===8?'compact':v===15?'standard':v===28?'airy':'custom'}
+function applySizeDefaults(prev,next){
+ const a=sizeDefaults(prev),b=sizeDefaults(next);
+ try{
+  if(S.cover.gapPxTouched!==true&&+S.cover.gapPx===a.gapPx){
+   S.cover.gapPx=b.gapPx;S.cover.gap=gapKeyOf(b.gapPx);}
+  if(S.cover.itemFsTouched!==true&&+S.cover.itemFs===a.itemFs)S.cover.itemFs=b.itemFs;
+  const c=(S.card&&S.card.text)||{};c.src=c.src||{};
+  if(S.card.srcFsTouched!==true&&+c.src.size===a.srcFs)c.src.size=b.srcFs;
+ }catch(e){}
+}
+/* 载入时兜底：缓存里存的是 9:16 出厂值但画幅停在 6:7 / 3:4，直接套该画幅默认 */
+applySizeDefaults('portrait',S.shared.size);
+/* v42 一次性迁移：v41 的 3:4 / 6:7 出厂默认是 28 / 50，本版改 26 / 52。
+   只迁「仍是 v41 出厂默认、且用户没手动动过」的缓存；手动改过的值一律保留。
+   不写这一条的话，v41 老用户升上来会继续停在 28 / 50，看不到新默认。 */
+try{
+ if(!S.__v42){
+  const _k=S.shared.size||S.cover.size;
+  if(_k==='xhs'||_k==='wechat'){
+   if(S.cover.gapPxTouched!==true&&+S.cover.gapPx===28){S.cover.gapPx=26;S.cover.gap='custom';}
+   if(S.cover.itemFsTouched!==true&&+S.cover.itemFs===50)S.cover.itemFs=52;
+  }
+  S.__v42=true;
+ }
+}catch(e){}
+function setShared(k,v){
+ const _prev=S.shared.size;
+ S.shared[k]=v;syncShared();
+ if(k==='size')applySizeDefaults(_prev,v);
+ stageRatio(S.shared.size);save();render();
+}
 
 /* */
 S.issue.issue_no=normIssue(S.issue.issue_no||DEF.issue.issue_no);
@@ -3307,7 +3354,7 @@ function drawCoverUnified(target){
     47 / 51 / 70 全被压到同一个 42px，用户改字号画面纹丝不动 —— 正是
     v26/v29 修过、v34 重写时又带回来的坑。现在用户一改字号就按设定值绘制，
     放不下靠页脚下移让位（画布恒定 9:16）；默认态仍走旧自适应，画面不变。 */
- const sizeMode=(S.cover.itemFsTouched===true||+cis.fs!==DEF.cover.itemFs)&&S.cover.itemFsKeepAll!==true;
+ const sizeMode=(S.cover.itemFsTouched===true||+S.cover.itemFs!==sizeItemFs())&&S.cover.itemFsKeepAll!==true;
  /* v36：9 种分隔模式真正生效（默认 lines 仍走原 2px 实线，逐字节不变） */
  const sepCfg=coverSepCfg(T,line,T.acc);
  /* v35：报头重点首条右上角要放「头条」胶囊，标题文字先给它让出宽度，
@@ -3423,7 +3470,7 @@ function drawSemanticMagazine(target){
  const foot='本期有 '+P.news.length+' 条资讯',footFs=Math.round(s(26));
  let footY=H-s(84);
  /* v36：杂志版同样接入保字号与 9 种分隔模式（v35 无条件把字号收敛到 41px）。 */
- const sizeMode=(S.cover.itemFsTouched===true||+cis.fs!==DEF.cover.itemFs)&&S.cover.itemFsKeepAll!==true;
+ const sizeMode=(S.cover.itemFsTouched===true||+S.cover.itemFs!==sizeItemFs())&&S.cover.itemFsKeepAll!==true;
  const sepCfg=coverSepCfg(T,line,acc);
  const ruleYs=[],TB=[];
  let y=hd.ruleY+s(56);
@@ -3615,7 +3662,7 @@ function drawNewsprintCover(ctx,T,W,H){
     否则报头一收紧、可用高度变大，默认自适应字号会跟着从 40 漂到 43+，
     等于改了个间距却把整屏文字大小换了。 */
  const avail=(H-122)-470-16;   /* 仅「确保页脚可见」旧自适应分支用于缩字号 */
- const sizeMode=(S.cover.itemFsTouched===true||+itemFsSet!==DEF.cover.itemFs)&&S.cover.itemFsKeepAll!==true;
+ const sizeMode=(S.cover.itemFsTouched===true||+S.cover.itemFs!==sizeItemFs())&&S.cover.itemFsKeepAll!==true;
  const _g=window.__npGap||{mb:44,pb:28};
  /* v34：03 区「条目间距」数值 / 三档预设真正生效。
     出厂未改过间距时保持原来的 44→28 自适应基准，默认画面逐字节不变；
@@ -3720,7 +3767,7 @@ function drawFocusCover(target){
  let mb=(S.cover.gapPxTouched?Math.max(12,coverGapPx()):44),pb=28,idealEnd=0,sizeMode=false;
  if(sz.w===1080&&!land){
   const _ci=coverItemStyle(T,1,false);
-  sizeMode=(S.cover.itemFsTouched===true||+_ci.fs!==DEF.cover.itemFs)&&S.cover.itemFsKeepAll!==true;
+  sizeMode=(S.cover.itemFsTouched===true||+S.cover.itemFs!==sizeItemFs())&&S.cover.itemFsKeepAll!==true;
   if(sizeMode){
    const _bt=coverTextCfg().brand,_hd=npHeadLayout(Math.max(20,Math.min(160,_bt.size)),_bt.line);
    const _its=(P.cover||[]).slice(0,coverCount());
@@ -4539,9 +4586,13 @@ function gates(){
    COVER_TEXT_DEF.date.size===45&&DATE_FS===45&&DEF.cover.itemFs===45&&
    String(DEF.cover.itemColor).toUpperCase()==='#3A4552'&&
    CARD_TEXT_DEF.title.size===68&&CARD_TEXT_DEF.body.size===48&&
-   +$('cvDateSize').value===45&&+$('cvItemFs').value===45&&
-   +$('cdTitleSize').value===68&&+$('cdBodySize').value===48&&
-   String($('cvItemColor').value).toUpperCase()==='#3A4552'],
+   /* v42：控件只校验「与当前状态同步」，出厂默认值由上面的常量断言负责。
+      用户手动改过字号/颜色时不再误报红。 */
+   +$('cvDateSize').value===+coverTextCfg().date.size&&
+   +$('cvItemFs').value===+S.cover.itemFs&&
+   +$('cdTitleSize').value===+cardTextCfg().title.size&&
+   +$('cdBodySize').value===+cardTextCfg().body.size&&
+   String($('cvItemColor').value).toUpperCase()===String(S.cover.itemColor).toUpperCase()],
   ['v40 卡片正文显示/关闭开关在 09 区且真接入绘制',
    !!$('cdBodyShow')&&$('cdBodyShow').checked===true&&cardTextCfg().body.show===true&&
    String(drawCard).indexOf('const bodyOn=ct.body.show!==false')>=0&&
@@ -4553,10 +4604,30 @@ function gates(){
    String(drawCover).indexOf('y-=LAND_LIFT*u')>=0&&
    String(drawCard).indexOf('npHeadLayout(_brandEff,bt.line)')>=0&&
    String(drawCover).indexOf('DATE_FS*u')>=0],
+  ['v42 刷新后画幅不被包内配置拉回、档位按 shared.size 判定',
+   String(sizeItemFs).indexOf('S.shared.size||S.cover.size')>=0&&
+   (()=>{const src=Array.from(document.scripts).map(s=>s.textContent||'').join('');
+     return src.indexOf('S.cover.size=S.shared.size')>=0&&src.indexOf('gapKeyOf(+S.cover.gapPx)')>=0;})()],
+  ['v42 v41 旧缓存 28/50 一次性迁到 26/52，手动值保留',
+   (()=>{const src=Array.from(document.scripts).map(s=>s.textContent||'').join('');
+     return src.indexOf('v42 一次性迁移')>=0&&src.indexOf('S.__v42')>=0&&
+      src.indexOf('gapPxTouched!==true')>=0;})()],
+  ['v42 6:7 / 3:4 出厂档位：条目间距 26 / 条目字号 52 / 来源字号 28，其余画幅 15 / 45 / 34',
+   typeof SIZE_DEFAULTS==='object'&&typeof sizeItemFs==='function'&&typeof applySizeDefaults==='function'&&
+   ['xhs','wechat'].every(k=>SIZE_DEFAULTS[k].gapPx===26&&SIZE_DEFAULTS[k].itemFs===52&&SIZE_DEFAULTS[k].srcFs===28)&&
+   ['portrait','landscape','square'].every(k=>SIZE_DEFAULTS[k].gapPx===15&&SIZE_DEFAULTS[k].itemFs===45&&SIZE_DEFAULTS[k].srcFs===34)&&
+   gapKeyOf(26)==='custom'&&gapKeyOf(28)==='airy'&&gapKeyOf(15)==='standard'&&
+   String(setShared).indexOf('applySizeDefaults(_prev,v)')>=0&&
+   String(drawCoverUnified).indexOf('sizeItemFs()')>=0],
+  ['v41 16:9 片尾文字放大（静态口径，运行时由浏览器验证）',
+   OUTRO_LAND_TEXT_U===1.8&&String(drawPlayer).indexOf('ouT=land?OUTRO_LAND_TEXT_U:ou')>=0&&
+   String(drawPlayer).indexOf('boxH=land?')>=0&&String(drawPlayer).indexOf('dy1=land?')>=0&&
+   String(drawPlayer).indexOf('text_u:ouT')>=0],
   ['v40 片尾按真实画幅排版，不再非等比拉伸',
    String(drawPlayer).indexOf('ctx.scale(PW/540')<0&&
    String(drawPlayer).indexOf('const W=PW,HH=PH')>=0&&
    String(drawPlayer).indexOf('no_stretch:true')>=0&&
+   String(drawPlayer).indexOf('ouT=land?OUTRO_LAND_TEXT_U:ou')>=0&&
    !!window.__outroDraw&&window.__outroDraw.overlap===0]
  ];
  $('gates').innerHTML=tests.map(([n,ok])=>'<div class="gate '+(ok?'ok':'bad')+'"><b>'+(ok?'✓':'!')+'</b>'+esc(n)+'</div>').join('');
@@ -4814,6 +4885,7 @@ function render(){
   TYPE_IDS.forEach(id=>{const e=$(id);if(e){e.onchange=itemSync;e.oninput=itemSync;}});
   /* v29：只有用户真的动过字号才切「按设定值+全文折行+固定 9:16 + 页脚下移让位」；
      默认 47 仍走旧自适应、页脚原位。旧缓存里存过非 47 的字号视为已动过，见 sizeMode。 */
+  const _srcFs=$('cdSrcSize');if(_srcFs)['input','change'].forEach(ev=>_srcFs.addEventListener(ev,()=>{S.card.srcFsTouched=true}));
   const _itFs=$('cvItemFs');
   if(_itFs)['input','change'].forEach(ev=>_itFs.addEventListener(ev,()=>{S.cover.itemFsTouched=true}));
  const _sm=buildSemantic();
@@ -5095,8 +5167,12 @@ function drawPlayer(){
    /* v40：片尾按真实画幅 W×HH 直接排版，不再把 540×960 用 ctx.scale 拉到 16:9。
       旧版 16:9 下 x 放大 3.56 倍、y 只 1.125 倍，文字被横向拉扁、窗口框与免责声明错位。
       9:16 下本式计算结果与旧版 ×2 完全一致；16:9 下文字不变形、各块比例一致。 */
-   const W=PW,HH=PH,T=THEMES[S.card.theme],ou=HH/960,pad=Math.round(W*40/540);
-   const FAM='"WenQuanYi Micro Hei",sans-serif',fs=v=>Math.max(10,Math.round(v*ou));
+   /* v41：16:9 下 ou=HH/960 只有 1.125，文字按它缩放会明显偏小（标题仅 63px）。
+      几何比例 ou 仍管 y/框/线，文字单独用 ouT：横版抬到 1.8（≈9:16 的 2 倍档），
+      竖版 ouT=ou 保持与 v40 逐像素一致。 */
+   const W=PW,HH=PH,T=THEMES[S.card.theme],land=W>HH,
+    ou=HH/960,ouT=land?OUTRO_LAND_TEXT_U:ou,pad=Math.round(W*40/540);
+   const FAM='"WenQuanYi Micro Hei",sans-serif',fs=v=>Math.max(10,Math.round(v*ouT));
    ctx.fillStyle=T.bg;ctx.fillRect(0,0,W,HH);
    ctx.fillStyle=T.acc;ctx.fillRect(0,0,W,Math.max(4,Math.round(5*ou)));
    const isEnd=i===seg.length-1,isOpen=i===0;
@@ -5120,18 +5196,23 @@ function drawPlayer(){
    ctx.fillText(S.issue.date_line,pad,y);
    boxes.push([pad,y-fs(24),pad+Math.round(W*360/540),y+4,'date']);
    y+=Math.round(46*ou);
-   const boxY=y+Math.round(40*ou),boxH=Math.round(112*ou);
+   const boxY=y+Math.round(40*ou),
+    boxH=land?Math.max(Math.round(112*ou),Math.round(96*ouT)):Math.round(112*ou);
    ctx.strokeStyle=T.line;ctx.lineWidth=1;rr(ctx,pad,boxY,W-2*pad,boxH,Math.round(10*ou));ctx.stroke();
+   const _ix=pad+Math.round(22*ou),
+    _iy1=land?boxY+Math.round(boxH*.34):boxY+Math.round(40*ou),
+    _iy2=land?boxY+Math.round(boxH*.72):boxY+Math.round(80*ou);
    ctx.fillStyle=T.sub;ctx.font=fs(20)+'px '+FAM;
-   ctx.fillText('资讯窗口',pad+Math.round(22*ou),boxY+Math.round(40*ou));
+   ctx.fillText('资讯窗口',_ix,_iy1);
    ctx.fillStyle=T.txt;ctx.font='bold '+fs(24)+'px '+FAM;
-   ctx.fillText(publishWindow().label,pad+Math.round(22*ou),boxY+Math.round(80*ou));
-   boxes.push([pad+Math.round(22*ou),boxY+Math.round(20*ou),pad+Math.round(262*ou),boxY+Math.round(92*ou),'window_box']);
+   ctx.fillText(publishWindow().label,_ix,_iy2);
+   boxes.push([_ix,_iy1-fs(20),_ix+Math.round(240*ou),_iy2+4,'window_box']);
    const ruleY=HH-Math.round(142*ou);
    ctx.strokeStyle=T.line;ctx.beginPath();ctx.moveTo(pad,ruleY);ctx.lineTo(W-pad,ruleY);ctx.stroke();
    ctx.fillStyle=T.sub;ctx.font=fs(20)+'px '+FAM;
    const d1='内容依据公开信息整理，具体以官方发布为准；',d2='仅供参考，不构成投资、医疗或法律建议。';
-   const dy1=HH-Math.round(104*ou),dy2=HH-Math.round(72*ou);
+   const dy1=land?HH-Math.max(Math.round(104*ou),Math.round(2.7*fs(20))):HH-Math.round(104*ou),
+    dy2=land?Math.min(dy1+Math.round(fs(20)*1.45),HH-Math.round(fs(20)*.4)):HH-Math.round(72*ou);
    ctx.fillText(d1,pad,dy1);ctx.fillText(d2,pad,dy2);
    boxes.push([pad,dy1-fs(20),pad+ctx.measureText(d1).width,dy1,'disclaimer1']);
    boxes.push([pad,dy2-fs(20),pad+ctx.measureText(d2).width,dy2,'disclaimer2']);
@@ -5141,7 +5222,8 @@ function drawPlayer(){
     if(ox>6&&oy>6)overlap++;}
    window.__outroDraw={kind:isEnd?'close':(isOpen?'open':'window'),boxes:boxes,overlap:overlap,
     title_lines:1,title_fs:bigFs,disclaimer:DISCLAIMER,item_count_shown:false,window_once:true,
-    window_box:true,disclaimer_read:false,responsive:true,no_stretch:true,ou:ou};
+    window_box:true,disclaimer_read:false,responsive:true,no_stretch:true,
+    ou:ou,text_u:ouT,land_text:land,land_text_u:OUTRO_LAND_TEXT_U};
    ctx.restore();
    }
  }else drawCard($('plCanvas'),cardIdx,true,rv);
@@ -6646,8 +6728,11 @@ function sheetsToCover(rows){const ti=_hidx(rows,'标题'),li=_hidx(rows,'分类
    syncAllNews();applyNewsView();renderBodyEditors();}
   if(!S.userImported&&c.cover_count)S.cover.count=+c.cover_count;
   if(!S.userImported&&c.cover_theme){const x=c.cover_theme;
-   if(x.theme)S.cover.theme=x.theme;if(x.tpl)S.cover.tpl=x.tpl;if(x.size){S.cover.size=x.size;S.export_size=x.size;S.card.size=x.size}
-   if(x.gap&&x.gap!=='airy')S.cover.gap=x.gap;  /* 本轮默认「标准」，旧包配置里的 airy 不再覆盖 */
+   if(x.theme)S.cover.theme=x.theme;if(x.tpl)S.cover.tpl=x.tpl;
+   /* v42：画幅以 UI 口径 shared.size 为准，不再被包内 cover_theme.size 拉回 9:16；
+      间距档由当前 gapPx 数值反推（26→custom / 15→standard / 28→airy），配置里的 gap 不覆盖。 */
+   if(x.size){S.cover.size=S.shared.size;S.export_size=S.shared.size;S.card.size=S.shared.size}
+   if(S.cover.gapPxTouched!==true)S.cover.gap=gapKeyOf(+S.cover.gapPx);
    /* v17：sep / alt_bands 以页面默认「细线」为准，内置留底文件里的旧 bands 不再覆盖；
       用户主动导入自己的配置（S.userImported）时仍按导入值生效 */
    if(S.userImported&&x.sep&&CV_SEPS[x.sep])S.cover.sep=x.sep;
